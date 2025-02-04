@@ -11,9 +11,11 @@
 		error = null;
 
 		try {
-			const response = await fetch('https://2a76-197-245-137-103.ngrok-free.app/api/chat', {
+			const response = await fetch('https://01de-197-245-137-103.ngrok-free.app/api/chat', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: {
+					'Content-Type': 'application/json'
+				},
 				body: JSON.stringify({
 					prompt: messages.map((m) => `${m.role}: ${m.content}`).join('\n') // Send full conversation
 				})
@@ -21,36 +23,29 @@
 
 			if (!response.ok) throw new Error('API request failed');
 
+			// Add user message to history
 			messages = [...messages, { role: 'user', content: input }];
 			input = '';
 
+			// Create assistant message entry
 			messages = [...messages, { role: 'assistant', content: '' }];
 			const assistantIndex = messages.length - 1;
 
+			// Stream the response
 			const reader = response.body.getReader();
 			const decoder = new TextDecoder();
-			let buffer = '';
 
 			while (true) {
 				const { done, value } = await reader.read();
 				if (done) break;
 
-				buffer += decoder.decode(value, { stream: true });
-
-				// Process complete JSON objects from the stream
-				const jsonObjects = buffer.split('\n').filter((line) => line.trim() !== '');
-				buffer = '';
-
-				for (const jsonString of jsonObjects) {
-					try {
-						const parsed = JSON.parse(jsonString);
-						if (parsed.response) {
-							messages[assistantIndex].content += parsed.response;
-							messages = [...messages]; // Force Svelte to re-render
-						}
-					} catch (e) {
-						console.error('Error parsing chunk:', e);
-					}
+				const chunk = decoder.decode(value);
+				try {
+					const parsed = JSON.parse(chunk);
+					messages[assistantIndex].content += parsed.response;
+					messages = messages; // Trigger Svelte update
+				} catch (e) {
+					console.error('Error parsing chunk:', e);
 				}
 			}
 		} catch (err) {
@@ -67,17 +62,6 @@
 			generateResponse();
 		}
 	}
-
-	// Load previous messages when the page loads
-	onMount(() => {
-		const savedMessages = localStorage.getItem('chatHistory');
-		if (savedMessages) {
-			messages = JSON.parse(savedMessages);
-		}
-	});
-
-	// Save messages whenever they change
-	$: localStorage.setItem('chatHistory', JSON.stringify(messages));
 </script>
 
 <div class="chat-container">
