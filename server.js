@@ -7,16 +7,20 @@ const app = express();
 app.use(cors()); // Enable CORS
 app.use(express.json());
 
+let conversationHistory = []; // Store past messages
+
 // Proxy endpoint for Ollama
 app.post('/api/chat', async (req, res) => {
 	const { prompt } = req.body;
+
+	conversationHistory.push({ role: 'user', content: prompt });
 
 	const response = await fetch('http://localhost:11434/api/generate', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
 			model: 'llama3.2:latest', // Your model name
-			prompt: prompt,
+			prompt: conversationHistory.map((m) => `${m.role}: ${m.content}`).join('\n'),
 			stream: true // Enable streaming
 		})
 	});

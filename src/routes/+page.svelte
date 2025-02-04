@@ -11,10 +11,12 @@
 		error = null;
 
 		try {
-			const response = await fetch('https://9795-197-245-137-103.ngrok-free.app/api/chat', {
+			const response = await fetch('https://c324-197-245-137-103.ngrok-free.app/api/chat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ prompt: input })
+				body: JSON.stringify({
+					prompt: messages.map((m) => `${m.role}: ${m.content}`).join('\n') // Send full conversation
+				})
 			});
 
 			if (!response.ok) throw new Error('API request failed');
@@ -65,6 +67,17 @@
 			generateResponse();
 		}
 	}
+
+	// Load previous messages when the page loads
+	onMount(() => {
+		const savedMessages = localStorage.getItem('chatHistory');
+		if (savedMessages) {
+			messages = JSON.parse(savedMessages);
+		}
+	});
+
+	// Save messages whenever they change
+	$: localStorage.setItem('chatHistory', JSON.stringify(messages));
 </script>
 
 <div class="chat-container">
