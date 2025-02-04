@@ -11,7 +11,7 @@
 		error = null;
 
 		try {
-			const response = await fetch('http://localhost:3001/api/chat', {
+			const response = await fetch('https://0321-197-245-137-103.ngrok-free.app', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ prompt: input })
