@@ -29,6 +29,11 @@ app.post('/api/chat', async (req, res) => {
 	response.body.pipe(res);
 });
 
+app.post('/api/clear', (req, res) => {
+	conversationHistory.length = 0; // Clears the existing array reference
+	res.json({ message: 'Chat history cleared' });
+});
+
 app.listen(3001, () => {
 	console.log('Backend running on http://localhost:3001');
 });

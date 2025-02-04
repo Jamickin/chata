@@ -1,17 +1,18 @@
-<!-- src/routes/Chat.svelte -->
 <script>
 	let input = '';
 	let messages = [];
 	let loading = false;
 	let error = null;
+	let notification = '';
 
 	// Handle streaming response from backend
 	async function generateResponse() {
 		loading = true;
 		error = null;
+		notification = '';
 
 		try {
-			const response = await fetch('https://01de-197-245-137-103.ngrok-free.app/api/chat', {
+			const response = await fetch('https://3a74-197-245-137-103.ngrok-free.app/api/chat', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -43,7 +44,7 @@
 				try {
 					const parsed = JSON.parse(chunk);
 					messages[assistantIndex].content += parsed.response;
-					messages = messages; // Trigger Svelte update
+					messages = [...messages];
 				} catch (e) {
 					console.error('Error parsing chunk:', e);
 				}
@@ -56,10 +57,24 @@
 		}
 	}
 
-	function handleKeyPress(e) {
-		if (e.key === 'Enter' && !e.shiftKey && !loading) {
-			e.preventDefault();
-			generateResponse();
+	async function clearChat() {
+		messages = []; // Clear frontend messages
+		input = ''; // Reset input
+		notification = ''; // Reset notification
+		error = null; // Reset error state
+
+		try {
+			const response = await fetch('https://3a74-197-245-137-103.ngrok-free.app/api/clear', {
+				method: 'POST'
+			});
+			if (response.ok) {
+				notification = 'Chat history cleared successfully!';
+			} else {
+				throw new Error('Failed to clear chat');
+			}
+		} catch (err) {
+			error = err.message || 'Failed to clear chat history';
+			console.error(err);
 		}
 	}
 </script>
@@ -70,26 +85,26 @@
 			<div class="message {message.role}-message">
 				{#if message.role === 'user'}
 					<strong>You:</strong>
-				{:else}
+				{:else if message.content.trim() !== ''}
+					<!-- Only show "AI:" if there's content -->
 					<strong>AI:</strong>
 				{/if}
-				{message.content}
+				<div class="message-content">{message.content}</div>
 			</div>
 		{/each}
 	</div>
 
 	<div class="input-group">
-		<input
-			type="text"
-			bind:value={input}
-			on:keydown={handleKeyPress}
-			placeholder="Type your message..."
-			disabled={loading}
-		/>
+		<input type="text" bind:value={input} placeholder="Type your message..." disabled={loading} />
 		<button on:click={generateResponse} disabled={loading || !input.trim()}>
 			{loading ? 'Generating...' : 'Send'}
 		</button>
+		<button on:click={clearChat} class="clear-btn">Clear Chat</button>
 	</div>
+
+	{#if notification}
+		<div class="notification success">{notification}</div>
+	{/if}
 
 	{#if error}
 		<div class="error">{error}</div>
@@ -97,6 +112,10 @@
 </div>
 
 <style>
+	.message-content {
+		white-space: pre-wrap;
+	}
+
 	.chat-container {
 		max-width: 800px;
 		margin: 2rem auto;
@@ -167,5 +186,19 @@
 	.error {
 		color: #dc3545;
 		margin-top: 1rem;
+	}
+
+	.clear-btn {
+		padding: 0.8rem 1.5rem;
+		background: #dc3545;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		transition: background 0.2s;
+	}
+
+	.clear-btn:hover {
+		background: #c82333;
 	}
 </style>
