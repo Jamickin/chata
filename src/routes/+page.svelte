@@ -11,7 +11,7 @@
 		error = null;
 
 		try {
-			const response = await fetch('https://c324-197-245-137-103.ngrok-free.app/api/chat', {
+			const response = await fetch('https://2a76-197-245-137-103.ngrok-free.app/api/chat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
