@@ -11,6 +11,8 @@
 		error = null;
 		notification = '';
 
+		messages = [...messages, { role: 'user', content: input }];
+
 		try {
 			const response = await fetch('https://3a74-197-245-137-103.ngrok-free.app/api/chat', {
 				method: 'POST',
