@@ -7,30 +7,25 @@
 
 	// Handle streaming response from backend
 	async function generateResponse() {
+		if (!input.trim()) return; // Prevent empty messages
 		loading = true;
 		error = null;
 		notification = '';
 
 		messages = [...messages, { role: 'user', content: input }];
+		input = ''; // Clear input field immediately after sending
 
 		try {
 			const response = await fetch('https://3a74-197-245-137-103.ngrok-free.app/api/chat', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					prompt: messages.map((m) => `${m.role}: ${m.content}`).join('\n') // Send full conversation
+					prompt: messages.map((m) => `${m.role}: ${m.content}`).join('\n')
 				})
 			});
 
 			if (!response.ok) throw new Error('API request failed');
 
-			// Add user message to history
-			messages = [...messages, { role: 'user', content: input }];
-			input = '';
-
-			// Create assistant message entry
 			messages = [...messages, { role: 'assistant', content: '' }];
 			const assistantIndex = messages.length - 1;
 
@@ -60,10 +55,10 @@
 	}
 
 	async function clearChat() {
-		messages = []; // Clear frontend messages
-		input = ''; // Reset input
-		notification = ''; // Reset notification
-		error = null; // Reset error state
+		messages = [];
+		input = '';
+		notification = '';
+		error = null;
 
 		try {
 			const response = await fetch('https://3a74-197-245-137-103.ngrok-free.app/api/clear', {
@@ -88,7 +83,6 @@
 				{#if message.role === 'user'}
 					<strong>You:</strong>
 				{:else if message.content.trim() !== ''}
-					<!-- Only show "AI:" if there's content -->
 					<strong>AI:</strong>
 				{/if}
 				<div class="message-content">{message.content}</div>
@@ -97,11 +91,17 @@
 	</div>
 
 	<div class="input-group">
-		<input type="text" bind:value={input} placeholder="Type your message..." disabled={loading} />
+		<input
+			type="text"
+			bind:value={input}
+			placeholder="Type your message..."
+			disabled={loading}
+			on:keydown={(e) => e.key === 'Enter' && generateResponse()}
+		/>
 		<button on:click={generateResponse} disabled={loading || !input.trim()}>
-			{loading ? 'Generating...' : 'Send'}
+			{loading ? '...' : 'Send'}
 		</button>
-		<button on:click={clearChat} class="clear-btn">Clear Chat</button>
+		<button on:click={clearChat} class="clear-btn">Clear</button>
 	</div>
 
 	{#if notification}
@@ -114,93 +114,117 @@
 </div>
 
 <style>
-	.message-content {
-		white-space: pre-wrap;
-	}
-
 	.chat-container {
-		max-width: 800px;
-		margin: 2rem auto;
+		max-width: 600px;
+		margin: auto;
 		padding: 1rem;
-		background: #f5f5f5;
-		border-radius: 8px;
+		background: #fff;
+		border-radius: 12px;
+		box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+		display: flex;
+		flex-direction: column;
+		height: 85vh;
+		max-height: 90vh;
 	}
 
 	.messages {
-		min-height: 400px;
-		max-height: 60vh;
+		flex: 1;
 		overflow-y: auto;
 		padding: 1rem;
-		background: white;
+		background: #f9f9f9;
 		border-radius: 8px;
 		margin-bottom: 1rem;
 	}
 
 	.message {
-		margin-bottom: 1rem;
-		padding: 0.5rem;
-		border-radius: 4px;
+		padding: 10px;
+		margin-bottom: 10px;
+		border-radius: 8px;
+		word-wrap: break-word;
+		font-size: 0.95rem;
 	}
 
 	.user-message {
-		background: #e3f2fd;
-		margin-left: 20%;
+		background: #007bff;
+		color: white;
+		align-self: flex-end;
+		text-align: right;
+		margin-left: auto;
+		max-width: 75%;
 	}
 
 	.assistant-message {
-		background: #f5f5f5;
-		margin-right: 20%;
+		background: #ececec;
+		color: black;
+		align-self: flex-start;
+		margin-right: auto;
+		max-width: 75%;
 	}
 
 	.input-group {
 		display: flex;
 		gap: 0.5rem;
+		width: 100%;
 	}
 
 	input {
 		flex: 1;
-		padding: 0.8rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
+		padding: 12px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
 		font-size: 1rem;
+		outline: none;
 	}
 
 	button {
-		padding: 0.8rem 1.5rem;
+		padding: 12px;
 		background: #007bff;
 		color: white;
 		border: none;
-		border-radius: 4px;
+		border-radius: 8px;
 		cursor: pointer;
+		font-size: 1rem;
 		transition: background 0.2s;
 	}
 
 	button:disabled {
-		background: #6c757d;
+		background: #ccc;
 		cursor: not-allowed;
 	}
 
-	.loading {
-		color: #6c757d;
-		font-style: italic;
-	}
-
-	.error {
-		color: #dc3545;
-		margin-top: 1rem;
-	}
-
 	.clear-btn {
-		padding: 0.8rem 1.5rem;
 		background: #dc3545;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-		transition: background 0.2s;
 	}
 
 	.clear-btn:hover {
 		background: #c82333;
+	}
+
+	@media (max-width: 768px) {
+		.chat-container {
+			width: 95%;
+			height: 90vh;
+		}
+
+		.messages {
+			padding: 0.8rem;
+			font-size: 0.9rem;
+		}
+
+		.input-group {
+			flex-direction: column;
+			gap: 0.4rem;
+		}
+
+		input {
+			padding: 10px;
+			font-size: 1rem;
+		}
+
+		button {
+			width: 100%;
+			font-size: 1rem;
+			padding: 10px;
+		}
 	}
 </style>
