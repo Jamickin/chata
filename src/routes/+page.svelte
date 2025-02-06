@@ -5,6 +5,9 @@
 	let error = null;
 	let notification = '';
 	let ngrok = 'https://a860-197-245-137-103.ngrok-free.app';
+	let book = null;
+	let bookContent = null;
+	let currentPage = 1;
 
 	// Handle non-streaming response from backend
 	async function generateResponse() {
@@ -41,6 +44,63 @@
 		} finally {
 			loading = false;
 		}
+	}
+
+	// Handle uploading a book
+	async function handleBookUpload(event) {
+		const file = event.target.files[0];
+		if (!file) return;
+
+		const formData = new FormData();
+		formData.append('file', file);
+
+		try {
+			const response = await fetch(ngrok + '/api/upload-book', {
+				method: 'POST',
+				body: formData
+			});
+
+			if (!response.ok) throw new Error('Failed to upload book');
+			const result = await response.json();
+
+			if (result.bookContent) {
+				bookContent = result.bookContent;
+				notification = 'Book uploaded and processed successfully!';
+			} else {
+				throw new Error('Failed to process the uploaded book');
+			}
+		} catch (err) {
+			error = err.message || 'Failed to upload book';
+			console.error(err);
+		}
+	}
+
+	// Load the current page of the book content
+	function loadPage(pageNumber) {
+		if (!bookContent) return;
+
+		const pages = bookContent.split('\n\n'); // Assuming each chapter or section is separated by two new lines
+		const totalPages = pages.length;
+
+		if (pageNumber < 1) currentPage = 1;
+		if (pageNumber > totalPages) currentPage = totalPages;
+
+		const pageContent = pages[currentPage - 1];
+
+		// You can display the page content (could be chapter, paragraph, etc.)
+		return pageContent;
+	}
+
+	// Go to the next page
+	function nextPage() {
+		currentPage += 1;
+		loadPage(currentPage);
+	}
+
+	// Go to the previous page
+	function prevPage() {
+		currentPage -= 1;
+		loadPage(currentPage);
 	}
 
 	async function clearChat() {
@@ -100,6 +160,25 @@
 	{#if error}
 		<div class="error">{error}</div>
 	{/if}
+	<!-- Book Upload Section -->
+	<div class="upload-section">
+		<input type="file" accept=".txt,.pdf,.epub" on:change={handleBookUpload} />
+		{#if bookContent}
+			<div class="book-reader">
+				<h3>Book Reader</h3>
+				<div class="page-content">
+					{loadPage(currentPage)}
+				</div>
+				<div class="pagination">
+					<button on:click={prevPage} disabled={currentPage <= 1}>Previous</button>
+					<span>{currentPage}</span>
+					<button on:click={nextPage} disabled={currentPage >= bookContent.split('\n\n').length}
+						>Next</button
+					>
+				</div>
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
@@ -215,5 +294,39 @@
 			font-size: 1rem;
 			padding: 10px;
 		}
+	}
+	.upload-section {
+		margin-top: 20px;
+	}
+
+	.book-reader {
+		margin-top: 20px;
+	}
+
+	.page-content {
+		padding: 1rem;
+		background: #f9f9f9;
+		border-radius: 8px;
+		margin-bottom: 1rem;
+	}
+
+	.pagination {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.pagination button {
+		padding: 10px;
+		background: #007bff;
+		color: white;
+		border: none;
+		border-radius: 8px;
+		cursor: pointer;
+		font-size: 1rem;
+	}
+
+	.pagination button:disabled {
+		background: #ccc;
+		cursor: not-allowed;
 	}
 </style>
