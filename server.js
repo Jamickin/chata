@@ -19,9 +19,9 @@ app.post('/api/chat', async (req, res) => {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			model: 'llama3.2:latest', // Your model name
+			model: 'deepseek-r1:1.5b', // Your model name
 			prompt: conversationHistory.map((m) => `${m.role}: ${m.content}`).join('\n'),
-			stream: true // Enable streaming
+			stream: false // Enable streaming
 		})
 	});
 

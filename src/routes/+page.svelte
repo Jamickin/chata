@@ -4,8 +4,9 @@
 	let loading = false;
 	let error = null;
 	let notification = '';
+	let ngrok = 'https://a860-197-245-137-103.ngrok-free.app';
 
-	// Handle streaming response from backend
+	// Handle non-streaming response from backend
 	async function generateResponse() {
 		if (!input.trim()) return; // Prevent empty messages
 		loading = true;
@@ -16,7 +17,7 @@
 		input = ''; // Clear input field immediately after sending
 
 		try {
-			const response = await fetch('https://3a74-197-245-137-103.ngrok-free.app/api/chat', {
+			const response = await fetch(ngrok + '/api/chat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -24,30 +25,18 @@
 				})
 			});
 
-			if (!response.ok) throw new Error('API request failed');
+			if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
 
-			messages = [...messages, { role: 'assistant', content: '' }];
-			const assistantIndex = messages.length - 1;
-
-			// Stream the response
-			const reader = response.body.getReader();
-			const decoder = new TextDecoder();
-
-			while (true) {
-				const { done, value } = await reader.read();
-				if (done) break;
-
-				const chunk = decoder.decode(value);
-				try {
-					const parsed = JSON.parse(chunk);
-					messages[assistantIndex].content += parsed.response;
-					messages = [...messages];
-				} catch (e) {
-					console.error('Error parsing chunk:', e);
-				}
+			// Wait for the entire response
+			const result = await response.json();
+			if (result.response) {
+				// Add the assistant's response to the messages
+				messages = [...messages, { role: 'assistant', content: result.response }];
+			} else {
+				console.warn('Response is missing "response" field:', result);
 			}
 		} catch (err) {
-			error = err.message || 'Failed to generate response';
+			error = `Error: ${err.message || 'Failed to generate response'}`;
 			console.error(err);
 		} finally {
 			loading = false;
@@ -61,7 +50,7 @@
 		error = null;
 
 		try {
-			const response = await fetch('https://3a74-197-245-137-103.ngrok-free.app/api/clear', {
+			const response = await fetch(ngrok + '/api/clear', {
 				method: 'POST'
 			});
 			if (response.ok) {
