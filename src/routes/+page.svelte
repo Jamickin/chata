@@ -1,15 +1,27 @@
 <script>
+	import { onMount } from 'svelte';
+
+	let ngrok = 'https://5a38-197-245-137-103.ngrok-free.app';
+	let books = [];
+	let selectedBookId = null;
+	let bookContent = '';
+	let currentPage = 1;
+	let error = null;
+	let notification = '';
 	let input = '';
 	let messages = [];
 	let loading = false;
-	let error = null;
-	let notification = '';
-	let ngrok = 'https://a860-197-245-137-103.ngrok-free.app';
-	let book = null;
-	let bookContent = null;
-	let currentPage = 1;
 
-	// Handle non-streaming response from backend
+	onMount(async () => {
+		try {
+			const response = await fetch('/api/books'); // Fetch book list
+			const data = await response.json();
+			books = data; // Assign book data
+		} catch (error) {
+			console.error('Failed to load books:', error);
+		}
+	});
+
 	async function generateResponse() {
 		if (!input.trim()) return; // Prevent empty messages
 		loading = true;
@@ -46,7 +58,36 @@
 		}
 	}
 
-	// Handle uploading a book
+	// Fetch available books
+	// Fetch available books
+	async function fetchBooks() {
+		try {
+			const response = await fetch(ngrok + '/api/books'); // Fetch from correct API endpoint
+			if (!response.ok) throw new Error('Failed to fetch books');
+			books = await response.json();
+			if (books.length > 0) {
+				selectedBookId = books[0].id;
+				loadBook(selectedBookId);
+			}
+		} catch (err) {
+			error = err.message;
+		}
+	}
+
+	// Load a book by ID
+	async function loadBook(bookId) {
+		try {
+			const response = await fetch(`${ngrok}/api/book/${bookId}`);
+			if (!response.ok) throw new Error('Failed to load book');
+			const result = await response.json();
+			bookContent = result.content;
+			currentPage = 1; // Reset to first page
+		} catch (err) {
+			error = err.message;
+		}
+	}
+
+	// Handle file upload
 	async function handleBookUpload(event) {
 		const file = event.target.files[0];
 		if (!file) return;
@@ -63,46 +104,40 @@
 			if (!response.ok) throw new Error('Failed to upload book');
 			const result = await response.json();
 
-			if (result.bookContent) {
-				bookContent = result.bookContent;
-				notification = 'Book uploaded and processed successfully!';
-			} else {
-				throw new Error('Failed to process the uploaded book');
-			}
+			notification = 'Book uploaded successfully!';
+			books.push({ id: result.bookId, name: result.name });
+			loadBook(result.bookId);
 		} catch (err) {
-			error = err.message || 'Failed to upload book';
-			console.error(err);
+			error = err.message;
 		}
 	}
 
-	// Load the current page of the book content
-	function loadPage(pageNumber) {
-		if (!bookContent) return;
+	// Change book selection
+	function changeBook(event) {
+		selectedBookId = event.target.value;
+		loadBook(selectedBookId);
+	}
 
-		const pages = bookContent.split('\n\n'); // Assuming each chapter or section is separated by two new lines
+	// Pagination functions
+	function loadPage(pageNumber) {
+		if (!bookContent) return '';
+
+		const pages = bookContent.split('\n\n'); // Split content into sections
 		const totalPages = pages.length;
 
 		if (pageNumber < 1) currentPage = 1;
 		if (pageNumber > totalPages) currentPage = totalPages;
 
-		const pageContent = pages[currentPage - 1];
-
-		// You can display the page content (could be chapter, paragraph, etc.)
-		return pageContent;
+		return pages[currentPage - 1];
 	}
 
-	// Go to the next page
 	function nextPage() {
 		currentPage += 1;
-		loadPage(currentPage);
 	}
 
-	// Go to the previous page
 	function prevPage() {
 		currentPage -= 1;
-		loadPage(currentPage);
 	}
-
 	async function clearChat() {
 		messages = [];
 		input = '';
@@ -123,6 +158,8 @@
 			console.error(err);
 		}
 	}
+	// Fetch books on mount
+	fetchBooks();
 </script>
 
 <div class="chat-container">
@@ -162,23 +199,33 @@
 	{/if}
 	<!-- Book Upload Section -->
 	<div class="upload-section">
-		<input type="file" accept=".txt,.pdf,.epub" on:change={handleBookUpload} />
-		{#if bookContent}
-			<div class="book-reader">
-				<h3>Book Reader</h3>
-				<div class="page-content">
-					{loadPage(currentPage)}
-				</div>
-				<div class="pagination">
-					<button on:click={prevPage} disabled={currentPage <= 1}>Previous</button>
-					<span>{currentPage}</span>
-					<button on:click={nextPage} disabled={currentPage >= bookContent.split('\n\n').length}
-						>Next</button
-					>
-				</div>
-			</div>
-		{/if}
+		<input type="file" accept=".txt,.pdf" on:change={handleBookUpload} />
 	</div>
+
+	{#if books.length > 0}
+		<div class="book-selection">
+			<label for="book-select">Select Book:</label>
+			<select id="book-select" bind:value={selectedBookId} on:change={changeBook}>
+				{#each books as book}
+					<option value={book.id}>{book.name}</option>
+				{/each}
+			</select>
+		</div>
+
+		<div class="book-reader">
+			<h3>Book Reader</h3>
+			<div class="page-content">
+				{loadPage(currentPage)}
+			</div>
+			<div class="pagination">
+				<button on:click={prevPage} disabled={currentPage <= 1}>Previous</button>
+				<span>Page {currentPage}</span>
+				<button on:click={nextPage} disabled={currentPage >= bookContent.split('\n\n').length}>
+					Next
+				</button>
+			</div>
+		</div>
+	{/if}
 </div>
 
 <style>
