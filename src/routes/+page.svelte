@@ -4,7 +4,7 @@
 	let loading = false;
 	let error = null;
 	let notification = '';
-	let ngrok = 'https://a860-197-245-137-103.ngrok-free.app';
+	let ngrok = 'https://neat-kindly-frog.ngrok-free.app';
 
 	// Handle non-streaming response from backend
 	async function generateResponse() {
