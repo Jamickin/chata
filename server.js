@@ -4,7 +4,11 @@ import cors from 'cors';
 import fetch from 'node-fetch';
 
 const app = express();
-app.use(cors()); // Enable CORS
+app.use(
+	cors({
+		origin: 'https://b9fb-197-245-43-158.ngrok-free.app' // Replace with the origin of your frontend
+	})
+);
 app.use(express.json());
 
 let conversationHistory = []; // Store past messages
@@ -19,7 +23,7 @@ app.post('/api/chat', async (req, res) => {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			model: 'deepseek-r1:1.5b', // Your model name
+			model: 'llama3.2:latest', // Your model name
 			prompt: conversationHistory.map((m) => `${m.role}: ${m.content}`).join('\n'),
 			stream: false // Enable streaming
 		})

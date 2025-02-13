@@ -4,8 +4,8 @@
 	let loading = false;
 	let error = null;
 	let notification = '';
-	let ngrok = 'https://neat-kindly-frog.ngrok-free.app';
-
+	// let ngrok = 'https://neat-kindly-frog.ngrok-free.app';
+	let apiBaseUrl = 'https://b9fb-197-245-43-158.ngrok-free.app';
 	// Handle non-streaming response from backend
 	async function generateResponse() {
 		if (!input.trim()) return; // Prevent empty messages
@@ -17,7 +17,7 @@
 		input = ''; // Clear input field immediately after sending
 
 		try {
-			const response = await fetch(ngrok + '/api/chat', {
+			const response = await fetch(apiBaseUrl + '/api/chat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -50,7 +50,7 @@
 		error = null;
 
 		try {
-			const response = await fetch(ngrok + '/api/clear', {
+			const response = await fetch(apiBaseUrl + '/api/clear', {
 				method: 'POST'
 			});
 			if (response.ok) {
