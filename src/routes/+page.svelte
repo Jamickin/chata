@@ -5,7 +5,7 @@
 			I began my journey through coding around the year 2021, through which, I've come to learn a
 			great deal about myself:
 		</p>
-		<ul>
+		<ul class="list-disc">
 			<li>
 				I Like the Font <strong>Merriweather</strong> for example. I'm using
 				<strong>Lexend</strong> for the body text.
@@ -16,8 +16,9 @@
 	</div>
 </section>
 
-<section class="bg-blue-500">
+<section>
 	<p>Insert a quote here</p>
+	<p>One thing one seems to forget: adaptability</p>
 </section>
 
 <style>
@@ -26,5 +27,8 @@
 	}
 	section {
 		padding: 1rem;
+	}
+	li {
+		margin: 0.5rem;
 	}
 </style>

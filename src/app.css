@@ -1,1 +1,45 @@
 @import 'tailwindcss';
+
+:global(body) {
+	font-family: 'Lexend', sans-serif;
+}
+:global(h1) {
+	font-family: 'Merriweather', serif;
+}
+:global(main) {
+	padding: 1rem;
+}
+:global(footer) {
+	text-align: center;
+}
+
+.lexend-normal {
+	font-family: 'Lexend', serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+}
+.lexend-bold {
+	font-family: 'Lexend', serif;
+	font-optical-sizing: auto;
+	font-weight: 700;
+	font-style: normal;
+}
+.lexend-light {
+	font-family: 'Lexend', serif;
+	font-optical-sizing: auto;
+	font-weight: 300;
+	font-style: normal;
+}
+.lexend-italic {
+	font-family: 'Lexend', serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: italic;
+}
+.lexend-bolditalic {
+	font-family: 'Lexend', serif;
+	font-optical-sizing: auto;
+	font-weight: 700;
+	font-style: italic;
+}

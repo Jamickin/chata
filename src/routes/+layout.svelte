@@ -1,35 +1,34 @@
 <script>
-	let { children } = $props();
 	import '../app.css';
+
+	import Header from '../components/Header.svelte';
+	import Sidebar from '../components/Sidebar.svelte';
+	import { onMount } from 'svelte';
+
+	let { children } = $props();
+	let mobileMenu = false;
+	let isMobile = $state(false);
+
+	function checkWindowWidth() {
+		isMobile = window.innerWidth <= 1026;
+	}
+
+	onMount(() => {
+		checkWindowWidth();
+		window.addEventListener('resize', checkWindowWidth);
+		return () => window.removeEventListener('resize', checkWindowWidth);
+	});
 </script>
 
-<header>
-	<img src="/LOGO.png" alt="My Logo" />
-	<h1 class="lexend-bold">This is my website.</h1>
-</header>
-<main>{@render children()}</main>
-<footer><p>This is the start of something brand new and exciting</p></footer>
+{#if isMobile}
+	<Sidebar />
+{:else}
+	<Header />
+{/if}
 
-<style>
-	header {
-		display: flex;
-		align-items: center;
-		padding: 1rem;
-		background-color: #f0f0f0;
-	}
-	header img {
-		width: 50px;
-		height: 50px;
-		border-radius: 50%;
-		margin-right: 1rem;
-	}
-	footer {
-		position: fixed;
-		left: 0;
-		bottom: 0;
-		width: 100%;
-		text-align: center;
-		padding: 1rem;
-		background-color: #f0f0f0;
-	}
-</style>
+<main>{@render children()}</main>
+<footer class="w-full p-4 bg-[#f0f0f0]">
+	<p>This is the start of something brand new and exciting</p>
+</footer>
+
+<style></style>
