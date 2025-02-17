@@ -2,11 +2,9 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import dns from 'node:dns';
 
-dns.setDefaultResultOrder('verbatim');
 export default defineConfig({
-	server: {
-		host: true,
-		allowedHosts: ['https://chadz.co.za', 'https://www.chadz.co.za']
-	},
+	// server: {
+	// 	host: '0.0.0.0' // Bind to all network interfaces, or use your local IP
+	// },
 	plugins: [sveltekit()]
 });
