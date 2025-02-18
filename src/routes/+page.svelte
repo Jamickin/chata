@@ -1,6 +1,11 @@
 <section>
-	<p>Briefly, an introduction: My name is <strong>James</strong> :()</p>
-	<div>
+	<div class="lexend-bold text-2xl text-center">
+		<p>Briefly, an introduction: My name is <strong>James</strong> :()</p>
+		<p>
+			I'm a <strong>web developer</strong> and <strong>designer</strong> who enjoys creating things
+			that live on the internet. My interest in web development started back in 2021 when I decided
+			to try editing custom <strong>MySpace</strong> themes.
+		</p>
 		<p>
 			I began my journey through coding around the year 2021, through which, I've come to learn a
 			great deal about myself:

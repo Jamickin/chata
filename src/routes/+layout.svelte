@@ -26,7 +26,7 @@
 	<Header />
 {/if}
 
-<main>{@render children()}</main>
+<main class="bg-[#f0f0f0] m-4 rounded-2xl shadow-xl">{@render children()}</main>
 <footer class="w-full p-4 bg-[#f0f0f0]">
 	<p>This is the start of something brand new and exciting</p>
 </footer>
