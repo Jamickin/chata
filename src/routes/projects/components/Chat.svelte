@@ -7,12 +7,20 @@
 	let error = $state(null);
 	let notification = $state('');
 	let apiBaseUrl = 'https://neat-kindly-frog.ngrok-free.app';
-	let minimized = $state(false);
+	let minimized = $state(true);
+	let isMobile = $state(false);
+
+	function checkWindowWidth() {
+		isMobile = window.innerWidth <= 1026;
+	}
 
 	onMount(() => {
 		if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
 			messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
 		}
+		checkWindowWidth();
+		window.addEventListener('resize', checkWindowWidth);
+		return () => window.removeEventListener('resize', checkWindowWidth);
 	});
 
 	function saveMessages() {
@@ -82,7 +90,11 @@
 	}
 </script>
 
-<div class="glass w-96 fixed bottom-[-2rem] right-0 {minimized ? 'h-16' : 'h-[768px]'} ">
+<div
+	class="glass {isMobile ? 'w-full' : 'w-96'} fixed right-0 bottom-[-2rem] {minimized
+		? 'h-16'
+		: 'h-[500px]'} "
+>
 	<button class="w-full h-16 bg-blue-400 text-white" onclick={() => (minimized = !minimized)}>
 		{minimized ? 'Maximize' : 'Minimize'}
 	</button>

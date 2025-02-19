@@ -5,12 +5,10 @@
 	import Sidebar from '../components/Sidebar.svelte';
 	import { onMount } from 'svelte';
 
-	let { children } = $props();
-	let mobileMenu = false;
 	let isMobile = $state(false);
 
 	function checkWindowWidth() {
-		isMobile = window.innerWidth <= 1026;
+		isMobile = window.innerWidth <= 768;
 	}
 
 	onMount(() => {
@@ -18,6 +16,7 @@
 		window.addEventListener('resize', checkWindowWidth);
 		return () => window.removeEventListener('resize', checkWindowWidth);
 	});
+	let { children } = $props();
 </script>
 
 {#if isMobile}

@@ -38,7 +38,7 @@ a {
 }
 
 button {
-	@apply hover:opacity-80;
+	@apply hover:opacity-80 cursor-pointer;
 }
 
 a::after {
