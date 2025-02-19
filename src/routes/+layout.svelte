@@ -26,9 +26,13 @@
 	<Header />
 {/if}
 
-<main class="bg-[#f0f0f0] m-4 rounded-2xl shadow-xl">{@render children()}</main>
-<footer class="w-full p-4 bg-[#f0f0f0]">
-	<p>This is the start of something brand new and exciting</p>
-</footer>
+<main class="bg-[#f0f0f0a9] m-8 rounded-3xl shadow-xl">
+	{@render children()}
+	<footer class="w-full p-4 text-center text-gray-500 italic">
+		<p>'This is the start of something brand new and exciting'</p>
+		<p>2025 - JW</p>
+	</footer>
+</main>
 
-<style></style>
+<style>
+</style>

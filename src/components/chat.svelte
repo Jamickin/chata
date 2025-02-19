@@ -1,20 +1,34 @@
 <script>
-	let input = '';
-	let messages = [];
-	let loading = false;
-	let error = null;
-	let notification = '';
-	// let ngrok = 'https://neat-kindly-frog.ngrok-free.app';
-	let apiBaseUrl = 'https://b9fb-197-245-43-158.ngrok-free.app';
-	// Handle non-streaming response from backend
+	import { onMount } from 'svelte';
+
+	let input = $state('');
+	let messages = $state([]);
+	let loading = $state(false);
+	let error = $state(null);
+	let notification = $state('');
+	let apiBaseUrl = 'https://neat-kindly-frog.ngrok-free.app';
+	let minimized = $state(false);
+
+	onMount(() => {
+		if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+			messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+		}
+	});
+
+	function saveMessages() {
+		if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+			localStorage.setItem('chatMessages', JSON.stringify(messages));
+		}
+	}
+
 	async function generateResponse() {
-		if (!input.trim()) return; // Prevent empty messages
 		loading = true;
 		error = null;
 		notification = '';
 
 		messages = [...messages, { role: 'user', content: input }];
-		input = ''; // Clear input field immediately after sending
+		saveMessages(); // Save after adding user input
+		input = '';
 
 		try {
 			const response = await fetch(apiBaseUrl + '/api/chat', {
@@ -27,11 +41,10 @@
 
 			if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
 
-			// Wait for the entire response
 			const result = await response.json();
 			if (result.response) {
-				// Add the assistant's response to the messages
 				messages = [...messages, { role: 'assistant', content: result.response }];
+				saveMessages(); // Save after adding AI response
 			} else {
 				console.warn('Response is missing "response" field:', result);
 			}
@@ -49,6 +62,10 @@
 		notification = '';
 		error = null;
 
+		if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+			localStorage.removeItem('chatMessages'); // Clear storage
+		}
+
 		try {
 			const response = await fetch(apiBaseUrl + '/api/clear', {
 				method: 'POST'
@@ -65,155 +82,71 @@
 	}
 </script>
 
-<div class="chat-container">
-	<div class="messages">
-		{#each messages as message, index}
-			<div class="message {message.role}-message">
-				{#if message.role === 'user'}
-					<strong>You:</strong>
-				{:else if message.content.trim() !== ''}
-					<strong>AI:</strong>
-				{/if}
-				<div class="message-content">{message.content}</div>
+<div class="glass w-96 fixed bottom-[-2rem] right-0 {minimized ? 'h-16' : 'h-[768px]'} ">
+	<button class="w-full h-16 bg-blue-400 text-white" onclick={() => (minimized = !minimized)}>
+		{minimized ? 'Maximize' : 'Minimize'}
+	</button>
+	{#if !minimized}
+		<div class="overflow-y-scroll p-2 h-full w-full rounded-t-2xl shadow-lg">
+			{#each messages as message, index}
+				<div>
+					{#if message.role === 'user'}
+						<div class="bg-blue-200 p-4 rounded-4xl rounded-tr-none text-right">
+							<strong>You:</strong>
+							{message.content}
+						</div>
+					{:else if message.role === 'assistant'}
+						<div class="bg-green-200 p-4 rounded-4xl rounded-tl-none">
+							<strong>AI:</strong>
+							{message.content}
+						</div>
+					{/if}
+				</div>
+			{/each}
+		</div>
+
+		<div>
+			<input
+				class="bg-white p-2 rounded-2xl w-full"
+				type="text"
+				bind:value={input}
+				placeholder="Type your message..."
+				disabled={loading || minimized}
+				onkeydown={(e) => {
+					if (e.key === 'Enter' && input !== '') {
+						generateResponse();
+					}
+				}}
+			/>
+			<div class="">
+				<button
+					class="p-2 bg-blue-400 text-white hover:opacity-80 rounded-2xl w-20 {loading
+						? 'opacity-50'
+						: ''} {input === '' ? 'cursor-not-allowed' : ''}"
+					onclick={generateResponse}
+					disabled={loading || input === ''}
+				>
+					{loading ? '...' : 'Send'}
+				</button>
+				<button
+					class="p-2 bg-red-400 text-white hover:opacity-80 rounded-2xl w-20"
+					onclick={clearChat}
+				>
+					Clear
+				</button>
 			</div>
-		{/each}
-	</div>
+		</div>
 
-	<div class="input-group">
-		<input
-			type="text"
-			bind:value={input}
-			placeholder="Type your message..."
-			disabled={loading}
-			on:keydown={(e) => e.key === 'Enter' && generateResponse()}
-		/>
-		<button on:click={generateResponse} disabled={loading || !input.trim()}>
-			{loading ? '...' : 'Send'}
-		</button>
-		<button on:click={clearChat} class="clear-btn">Clear</button>
-	</div>
+		{#if notification}
+			<div class="font-bold">{notification}</div>
+		{/if}
 
-	{#if notification}
-		<div class="notification success">{notification}</div>
-	{/if}
-
-	{#if error}
-		<div class="error">{error}</div>
+		{#if error}
+			<div class="text-red font-bold">{error}</div>
+		{/if}
 	{/if}
 </div>
 
 <style>
-	.chat-container {
-		max-width: 600px;
-		margin: auto;
-		padding: 1rem;
-		background: #fff;
-		border-radius: 12px;
-		box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-		display: flex;
-		flex-direction: column;
-		height: 85vh;
-		max-height: 90vh;
-	}
-
-	.messages {
-		flex: 1;
-		overflow-y: auto;
-		padding: 1rem;
-		background: #f9f9f9;
-		border-radius: 8px;
-		margin-bottom: 1rem;
-	}
-
-	.message {
-		padding: 10px;
-		margin-bottom: 10px;
-		border-radius: 8px;
-		word-wrap: break-word;
-		font-size: 0.95rem;
-	}
-
-	.user-message {
-		background: #007bff;
-		color: white;
-		align-self: flex-end;
-		text-align: right;
-		margin-left: auto;
-		max-width: 75%;
-	}
-
-	.assistant-message {
-		background: #ececec;
-		color: black;
-		align-self: flex-start;
-		margin-right: auto;
-		max-width: 75%;
-	}
-
-	.input-group {
-		display: flex;
-		gap: 0.5rem;
-		width: 100%;
-	}
-
-	input {
-		flex: 1;
-		padding: 12px;
-		border: 1px solid #ccc;
-		border-radius: 8px;
-		font-size: 1rem;
-		outline: none;
-	}
-
-	button {
-		padding: 12px;
-		background: #007bff;
-		color: white;
-		border: none;
-		border-radius: 8px;
-		cursor: pointer;
-		font-size: 1rem;
-		transition: background 0.2s;
-	}
-
-	button:disabled {
-		background: #ccc;
-		cursor: not-allowed;
-	}
-
-	.clear-btn {
-		background: #dc3545;
-	}
-
-	.clear-btn:hover {
-		background: #c82333;
-	}
-
-	@media (max-width: 768px) {
-		.chat-container {
-			width: 95%;
-			height: 90vh;
-		}
-
-		.messages {
-			padding: 0.8rem;
-			font-size: 0.9rem;
-		}
-
-		.input-group {
-			flex-direction: column;
-			gap: 0.4rem;
-		}
-
-		input {
-			padding: 10px;
-			font-size: 1rem;
-		}
-
-		button {
-			width: 100%;
-			font-size: 1rem;
-			padding: 10px;
-		}
-	}
+	/* Add your styles here */
 </style>

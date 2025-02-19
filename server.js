@@ -4,11 +4,7 @@ import cors from 'cors';
 import fetch from 'node-fetch';
 
 const app = express();
-app.use(
-	cors({
-		origin: 'https://b9fb-197-245-43-158.ngrok-free.app' // Replace with the origin of your frontend
-	})
-);
+app.use(cors());
 app.use(express.json());
 
 let conversationHistory = []; // Store past messages
@@ -38,6 +34,6 @@ app.post('/api/clear', (req, res) => {
 	res.json({ message: 'Chat history cleared' });
 });
 
-app.listen(3001, () => {
-	console.log('Backend running on http://localhost:3001');
+app.listen(3000, () => {
+	console.log('Backend running on http://localhost:3000');
 });

@@ -1,45 +1,50 @@
 @import 'tailwindcss';
 
-:global(body) {
-	font-family: 'Lexend', sans-serif;
-}
-:global(h1) {
-	font-family: 'Merriweather', serif;
-}
-:global(main) {
-	padding: 1rem;
-}
-:global(footer) {
-	text-align: center;
+body {
+	background-color: rgb(253, 249, 249);
+	font-family: 'Lexend', serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+	color: #333;
 }
 
-.lexend-normal {
-	font-family: 'Lexend', serif;
-	font-optical-sizing: auto;
-	font-weight: 400;
-	font-style: normal;
+h1 {
+	@apply font-bold text-4xl;
 }
-.lexend-bold {
-	font-family: 'Lexend', serif;
-	font-optical-sizing: auto;
-	font-weight: 700;
-	font-style: normal;
+
+h3 {
+	@apply font-bold text-2xl;
 }
-.lexend-light {
-	font-family: 'Lexend', serif;
-	font-optical-sizing: auto;
-	font-weight: 300;
-	font-style: normal;
+
+div {
+	@apply flex flex-col gap-4;
 }
-.lexend-italic {
-	font-family: 'Lexend', serif;
-	font-optical-sizing: auto;
-	font-weight: 400;
-	font-style: italic;
+
+ul {
+	@apply list-disc mt-4 ml-12;
 }
-.lexend-bolditalic {
-	font-family: 'Lexend', serif;
-	font-optical-sizing: auto;
-	font-weight: 700;
-	font-style: italic;
+
+section {
+	@apply p-8 bg-gray-100 rounded-lg shadow-lg my-8;
+}
+
+a {
+	@apply text-blue-500;
+}
+
+.logo::after {
+	content: '';
+}
+
+button {
+	@apply hover:opacity-80;
+}
+
+a::after {
+	content: ' |';
+}
+
+.glass {
+	@apply backdrop-filter backdrop-blur-md p-8 rounded-lg shadow-lg my-8;
 }
