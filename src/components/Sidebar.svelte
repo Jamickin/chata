@@ -14,10 +14,13 @@
 	{/if}
 </button>
 
-<nav class:sidebar-hidden={!isSidebarVisible} class="sidebar w-1/4 p-4 bg-[#f0f0f0] fixed h-full">
+<nav
+	class:sidebar-hidden={!isSidebarVisible}
+	class="sidebar w-1/3 bg-[#f0f0f0] fixed top-0 left-0 h-full"
+>
 	<ul>
 		<img src="/LOGO.png" alt="My Logo" class="w-full" />
-		<h1 class="lexend-bold">This is my website.</h1>
+		<h3 class="lexend-bold">Welcome</h3>
 		<li><a href="/" class="logo">home</a></li>
 		<li><a href="/projects" class="logo">projects</a></li>
 	</ul>
@@ -28,7 +31,7 @@
 		transition: transform 0.3s ease-in-out;
 	}
 	.sidebar-hidden {
-		transform: translateX(-100%);
+		transform: translateX(-200%);
 	}
 	.toggle-button {
 		position: fixed;
