@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import ePub from 'epubjs';
 
 	let input = $state('');
 	let messages = $state([]);
@@ -7,8 +8,13 @@
 	let error = $state(null);
 	let notification = $state('');
 	let apiBaseUrl = 'https://neat-kindly-frog.ngrok-free.app';
-	let minimized = $state(true);
+	let minimized = $state(false);
 	let isMobile = $state(false);
+	let book;
+	let rendition;
+	let highlightedText = $state('');
+	let showModal = $state(true);
+	let currentPage = $state(1); // Track the current page for context in the prompt
 
 	function checkWindowWidth() {
 		isMobile = window.innerWidth <= 800;
@@ -54,6 +60,7 @@
 				messages = [...messages, { role: 'assistant', content: result.response }];
 				saveMessages(); // Save after adding AI response
 			} else {
+				messages = [...messages, { role: 'assistant', content: 'No response received.' }];
 				console.warn('Response is missing "response" field:', result);
 			}
 		} catch (err) {
@@ -69,26 +76,105 @@
 		input = '';
 		notification = '';
 		error = null;
-
-		if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-			localStorage.removeItem('chatMessages'); // Clear storage
-		}
+		localStorage.removeItem('chatMessages'); // Always clear local storage
 
 		try {
-			const response = await fetch(apiBaseUrl + '/api/clear', {
-				method: 'POST'
-			});
+			const response = await fetch(apiBaseUrl + '/api/clear', { method: 'POST' });
 			if (response.ok) {
 				notification = 'Chat history cleared successfully!';
 			} else {
 				throw new Error('Failed to clear chat');
 			}
 		} catch (err) {
-			error = err.message || 'Failed to clear chat history';
+			console.error(err);
+			error = 'Chat cleared locally, but server request failed';
+		}
+	}
+
+	function handleFileUpload(event) {
+		const file = event.target.files[0];
+		if (!file) {
+			error = 'No file selected';
+			return;
+		}
+
+		try {
+			book = ePub(file);
+			rendition = book.renderTo('viewer', {
+				width: '100%',
+				height: '100%'
+			});
+			const iframe = document.querySelector('iframe');
+			if (iframe) iframe.sandbox = 'allow-scripts allow-same-origin allow-popups';
+			rendition.display();
+			rendition.on('rendered', (section) => {
+				currentPage = section.index; // Track the page number as the eBook is rendered
+			});
+		} catch (err) {
+			error = 'Failed to load EPUB file';
 			console.error(err);
 		}
 	}
+
+	function nextPage() {
+		if (rendition) {
+			rendition.next();
+		}
+	}
+
+	function prevPage() {
+		if (rendition) {
+			rendition.prev();
+		}
+	}
+
+	// Detect text selection
+	function handleTextSelection() {
+		const selectedText = window.getSelection().toString().trim();
+		if (selectedText) {
+			highlightedText = selectedText;
+		}
+	}
+
+	// Send highlighted text to AI with context
+	async function sendToAI() {
+		const prompt = `Who/What is ${highlightedText}? I'm on page ${currentPage}. The book is Mistborn, Final Empire. Don't spoil anything.`;
+		highlightedText = ''; // Clear the highlighted text
+		input = ''; // Optionally reset the input box
+
+		// Call the AI with the prompt
+		await generateResponse();
+	}
+
+	// Close the modal without sending
+	function closeModal() {
+		showModal = false;
+		highlightedText = ''; // Clear the highlighted text
+	}
+
+	console.log(currentPage);
 </script>
+
+<div>
+	<input type="file" accept=".epub" onchange={handleFileUpload} />
+	<button id="viewer" class="iframe" aria-label="EPUB Viewer" onmouseup={handleTextSelection}
+	></button>
+	<div class="pagination-controls">
+		<button onclick={prevPage}>Previous</button>
+		<button onclick={nextPage}>Next</button>
+	</div>
+</div>
+
+{#if showModal}
+	<div class="modal-overlay">
+		<div class="modal">
+			<p><strong>Highlighted:</strong> {highlightedText}</p>
+			<p>Send this to the AI?</p>
+			<button onclick={sendToAI}>Send</button>
+			<button onclick={closeModal}>Cancel</button>
+		</div>
+	</div>
+{/if}
 
 <div
 	class="glass {isMobile ? 'w-full' : 'w-96'} fixed right-0 bottom-0 {minimized
@@ -163,5 +249,30 @@
 </div>
 
 <style>
-	/* Add your styles here */
+	.iframe {
+		width: 100%;
+		height: 500px;
+		border: 1px solid #ccc;
+		margin-bottom: 20px;
+	}
+	.modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 200px;
+		height: 200px;
+		background: rgba(0, 0, 0, 0.5);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.modal {
+		background: white;
+		padding: 20px;
+		border-radius: 10px;
+		text-align: center;
+	}
+	.modal button {
+		margin: 10px;
+	}
 </style>

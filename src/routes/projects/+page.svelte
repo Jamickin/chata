@@ -22,8 +22,8 @@
 				<a href="https://github.com/Jamickin/larazillow" target="_blank" class="logo">GitHub</a>."
 			</li>
 			<li>
-				<strong>Project Three:</strong> A ChatBot that I'm working on. I intend to make something cool
-				out of it... eventually.
+				<strong>Project Three:</strong> A ChatBot that I'm working on. I intend to make something
+				cool out of it... eventually. I'll link it here: <a href="/book">Chata</a>
 			</li>
 		</ul>
 	</div>

@@ -7,3 +7,13 @@
 		<nav class="flex gap-2"><a href="/">home</a><a href="/projects">projects</a></nav>
 	</div>
 </header>
+
+<style>
+	a::before {
+		content: '| ';
+	}
+
+	a:first-child::before {
+		content: '';
+	}
+</style>

@@ -41,10 +41,6 @@ button {
 	@apply hover:opacity-80 cursor-pointer;
 }
 
-a::after {
-	content: ' |';
-}
-
 .glass {
-	@apply backdrop-filter backdrop-blur-md p-8 rounded-lg shadow-lg my-8;
+	@apply backdrop-filter backdrop-blur-sm rounded-lg shadow-lg;
 }

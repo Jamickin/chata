@@ -1,5 +1,5 @@
 <script>
-	let isSidebarVisible = true;
+	let isSidebarVisible = false;
 
 	function toggleSidebar() {
 		isSidebarVisible = !isSidebarVisible;
@@ -8,7 +8,7 @@
 
 <nav
 	class:sidebar-hidden={!isSidebarVisible}
-	class="sidebar w-1/3 bg-[#f0f0f0] fixed top-0 left-0 h-full flex flex-col"
+	class="transition w-1/3 glass fixed top-0 left-0 h-full flex flex-col"
 >
 	<button class="absolute -right-4 text-2xl" onclick={toggleSidebar}>
 		{#if isSidebarVisible}
@@ -26,9 +26,6 @@
 </nav>
 
 <style>
-	.sidebar {
-		transition: transform 0.3s ease-in-out;
-	}
 	.sidebar-hidden {
 		transform: translateX(-100%);
 	}
