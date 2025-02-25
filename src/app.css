@@ -1,46 +1,58 @@
 @import 'tailwindcss';
 
 body {
-	background-color: rgb(253, 249, 249);
-	font-family: 'Lexend', serif;
-	font-optical-sizing: auto;
-	font-weight: 400;
-	font-style: normal;
-	color: #333;
+	@apply bg-gradient-to-r from-pink-100 via-white to-blue-100 text-gray-800 antialiased;
+	font-family: 'Lexend', sans-serif;
 }
-
 h1 {
-	@apply font-bold text-4xl;
+	@apply text-4xl font-extrabold mb-4;
 }
 
 h3 {
-	@apply font-bold text-2xl;
+	@apply text-2xl font-bold mb-2;
 }
 
-div {
-	@apply flex flex-col gap-4;
+p {
+	@apply leading-relaxed;
 }
 
-ul {
-	@apply list-disc mt-4 ml-12;
+.container {
+	@apply mx-auto max-w-4xl p-8;
 }
 
 section {
-	@apply p-8 bg-gray-100 rounded-lg shadow-lg my-8;
+	@apply bg-white p-6 rounded-lg shadow-md mb-8;
+}
+
+ul {
+	@apply list-disc list-inside ml-4;
 }
 
 a {
-	@apply text-blue-500;
-}
-
-.logo::after {
-	content: '';
+	@apply text-blue-500 hover:underline;
 }
 
 button {
-	@apply hover:opacity-80 cursor-pointer;
+	@apply bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-300;
 }
 
 .glass {
-	@apply backdrop-filter backdrop-blur-sm rounded-lg shadow-lg;
+	@apply bg-white backdrop-filter backdrop-blur-lg rounded-lg shadow-lg;
+}
+
+@keyframes fade-in {
+	0% {
+		color: rgba(0, 0, 0, 0);
+	}
+	100% {
+		color: rgb(0, 0, 0);
+	}
+}
+
+.fade-in {
+	animation: fade-in 700ms ease-in-out forwards;
+}
+
+.fade-in-delay {
+	animation-delay: 300ms;
 }
