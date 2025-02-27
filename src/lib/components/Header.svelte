@@ -13,7 +13,6 @@
 		><img src="/LOGO.png" alt="My Logo" class="h-full rounded-l-2xl" /></a
 	>
 	<div class="flex flex-col">
-		<button onclick={handleClick}>WELCOME</button>
 		<nav class="flex items-center gap-2">
 			<a href="/">home</a><a href="/projects">projects</a>
 		</nav>
