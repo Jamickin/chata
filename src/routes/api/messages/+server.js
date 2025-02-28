@@ -1,14 +1,15 @@
 // src/routes/api/messages/+server.js
 import { json } from '@sveltejs/kit';
 import mysql from 'mysql2/promise';
+import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } from '$env/static/private';
 
 export async function GET() {
 	// Create a connection to the database
 	const connection = await mysql.createConnection({
-		host: 'localhost',
-		user: 'root',
-		password: 'EkIsDieBesteNeger1',
-		database: 'chadz'
+		host: DB_HOST,
+		user: DB_USER,
+		password: DB_PASSWORD,
+		database: DB_NAME
 	});
 
 	try {

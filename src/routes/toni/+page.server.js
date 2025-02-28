@@ -1,6 +1,7 @@
 // src/routes/toni/+page.server.js
 import { fail } from '@sveltejs/kit';
 import mysql from 'mysql2/promise';
+import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } from '$env/static/private';
 
 export const actions = {
 	default: async ({ request }) => {
@@ -16,10 +17,10 @@ export const actions = {
 
 		// Connect to the MySQL database
 		const connection = await mysql.createConnection({
-			host: 'localhost',
-			user: 'root',
-			password: 'EkIsDieBesteNeger1',
-			database: 'chadz'
+			host: DB_HOST,
+			user: DB_USER,
+			password: DB_PASSWORD,
+			database: DB_NAME
 		});
 
 		try {
