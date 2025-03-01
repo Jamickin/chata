@@ -9,7 +9,6 @@
 		fetchMessages();
 	});
 
-	// Reactive state variables
 	let name = '';
 	let message = '';
 	let date = Timestamp.now();
@@ -25,6 +24,7 @@
 			// Clear the form fields after submission
 			name = '';
 			message = '';
+			fetchMessages();
 		} catch (error) {
 			console.error('Error adding document: ', error);
 		}

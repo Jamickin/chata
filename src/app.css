@@ -32,3 +32,7 @@ ul {
 a {
 	@apply text-orange-400;
 }
+
+button {
+	@apply bg-orange-400 text-slate-50 px-4 py-2 rounded-lg shadow-md cursor-pointer;
+}

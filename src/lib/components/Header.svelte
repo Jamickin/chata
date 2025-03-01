@@ -18,9 +18,9 @@
 		: 'w-full h-28'}"
 >
 	<nav class="flex items-center h-full w-full {mobile ? 'flex-col' : ''}">
-		<a href="/" class={mobile ? 'w-full' : 'h-full'}>
+		<!-- <a href="/" class={mobile ? 'w-full' : 'h-full'}>
 			<img src="./LOGO.png" alt="Chadz Logo" class="h-full" />
-		</a>
+		</a> -->
 		<div class="flex items-center gap-8 h-full w-full {mobile ? 'flex-col ' : 'px-8'}">
 			<a href="/" class={mobile ? 'p-2' : ''}>home</a>
 			<a href="/tati" class={mobile ? 'p-2' : ''}>Tatiana's Tidbits</a>
