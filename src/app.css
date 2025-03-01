@@ -34,5 +34,5 @@ a {
 }
 
 button {
-	@apply bg-orange-400 text-slate-50 px-4 py-2 rounded-lg shadow-md cursor-pointer;
+	@apply text-slate-50 px-4 py-2 rounded-lg shadow-md cursor-pointer;
 }

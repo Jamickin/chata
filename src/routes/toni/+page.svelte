@@ -2,4 +2,4 @@
 	import MessageForm from '$lib/components/MessageForm.svelte';
 </script>
 
-<MessageForm />
+<main class=""><MessageForm /></main>
