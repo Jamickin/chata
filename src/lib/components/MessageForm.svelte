@@ -7,6 +7,16 @@
 	let message = $state('');
 	let messages = $state([]);
 	let passcode = $state('');
+	let isMobile = $state(false);
+
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			isMobile = window.innerWidth <= 768;
+			const updateWidth = () => (isMobile = window.innerWidth <= 768);
+			window.addEventListener('resize', updateWidth);
+			return () => window.removeEventListener('resize', updateWidth);
+		}
+	});
 
 	const fetchMessages = async () => {
 		try {
@@ -55,8 +65,11 @@
 
 <h1>Toni's Timeline</h1>
 
-<section class="flex justify-around">
-	<form class="w-1/2 flex flex-col p-4 space-y-4" onsubmit={handleSubmit}>
+<section class="flex {isMobile ? 'flex-col' : ''} justify-around">
+	<form
+		class="{!isMobile ? 'w-1/2' : 'w-full'} flex flex-col p-4 space-y-4"
+		onsubmit={handleSubmit}
+	>
 		<input
 			class="p-2 border rounded-md shadow-sm"
 			type="text"
@@ -74,7 +87,7 @@
 					handleSubmit(e);
 				}
 			}}
-			class="shadow-md p-4 h-32 rounded-md border"
+			class="shadow-md p-2 h-32 rounded-md border"
 		></textarea>
 		<input
 			class="p-2 border rounded-md shadow-sm"
@@ -86,10 +99,12 @@
 			class="mt-2 bg-orange-400 text-white px-4 py-2 rounded-md shadow-md hover:bg-orange-500"
 			type="submit"
 		>
-			Send Message
+			Post
 		</button>
 	</form>
-	<div class="shadow-lg w-1/2 p-8 bg-slate-50 dark:bg-slate-800 rounded-md">
+	<div
+		class="shadow-lg {!isMobile ? 'w-1/2' : 'w-full'} p-8 bg-slate-50 dark:bg-slate-800 rounded-md"
+	>
 		<h3 class="text-lg font-bold mb-2">Preview:</h3>
 		<div class="p-4 border rounded-md shadow-md bg-white dark:bg-slate-700" if={message}>
 			<strong>{name || 'Your Name'} said:</strong>
@@ -98,7 +113,7 @@
 	</div>
 </section>
 
-<section class=" grid grid-cols-2 gap-4">
+<section class="grid {!isMobile ? 'grid-cols-2' : ''} gap-4">
 	{#each messages as message (message.id)}
 		<div
 			class="p-4 border rounded-md shadow-md bg-white dark:bg-slate-700 flex items-center flex-col"
