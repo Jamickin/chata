@@ -17,3 +17,4 @@ const app = initializeApp(firebaseConfig);
 // Export Firebase services
 export const db = getFirestore(app);
 export const messagesCollection = collection(db, 'messages');
+export const todosCollection = collection(db, 'todos');

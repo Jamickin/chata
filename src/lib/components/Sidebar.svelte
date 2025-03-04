@@ -1,8 +1,9 @@
 <script>
+	import { routes } from '../routes.js';
 	let openSidebar = $state(true);
 
 	function toggleSidebar() {
-		openSidebar = !openSidebar; // Use function form to safely update state
+		openSidebar = !openSidebar;
 	}
 </script>
 
@@ -12,9 +13,9 @@
 	>
 		<button onclick={toggleSidebar} class="absolute top-0 right-0">x</button>
 		<nav class="flex flex-col items-center w-full p-2 gap-8">
-			<a onclick={toggleSidebar} href="/">Home</a>
-			<a onclick={toggleSidebar} href="/tati">Tatiana's Tidbits</a>
-			<a onclick={toggleSidebar} href="/toni">Toni's Timeline</a>
+			{#each routes as route}
+				<a onclick={toggleSidebar} href={route.path}>{route.name}</a>
+			{/each}
 		</nav>
 	</header>
 {:else}
@@ -22,7 +23,7 @@
 {/if}
 
 <style>
-	nav > a {
+	a {
 		@apply hover:underline border h-full w-full text-center uppercase;
 	}
 </style>

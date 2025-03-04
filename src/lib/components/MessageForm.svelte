@@ -8,6 +8,7 @@
 	let messages = $state([]);
 	let passcode = $state('');
 	let isMobile = $state(false);
+	let loading = $state(false);
 
 	$effect(() => {
 		if (typeof window !== 'undefined') {
@@ -20,10 +21,13 @@
 
 	const fetchMessages = async () => {
 		try {
+			loading = true;
 			const querySnapshot = await getDocs(collection(db, 'messages'));
 			messages = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 		} catch (error) {
 			console.error('Error fetching messages:', error);
+		} finally {
+			loading = false;
 		}
 	};
 
@@ -114,27 +118,29 @@
 </section>
 
 <section class="grid {!isMobile ? 'grid-cols-2' : ''} gap-4">
-	{#each messages as message (message.id)}
-		<div
-			class="p-4 border rounded-md shadow-md bg-white dark:bg-slate-700 flex items-center flex-col"
-		>
-			<strong class="text-orange-400">{message.name} said:</strong>
-			<p class="mt-2">{message.message}</p>
-			<time class="text-sm text-gray-500"
-				>{new Date(message.date.seconds * 1000).toLocaleString()}</time
+	{#if !loading}
+		{#each messages as message (message.id)}
+			<div
+				class="p-4 border rounded-md shadow-md bg-white dark:bg-slate-700 flex items-center flex-col"
 			>
-			<button
-				class="mt-2 bg-red-500 text-white px-2 py-1 rounded-md shadow-md hover:bg-red-600"
-				onclick={() => deletePost(message.id, message.passcode)}
-			>
-				{#if message.passcode !== ''}
-					Delete <span class="opacity-35">#</span>
-				{:else}
-					Delete
-				{/if}
-			</button>
-		</div>
-	{/each}
+				<strong class="text-orange-400">{message.name} said:</strong>
+				<p class="mt-2">{message.message}</p>
+				<time class="text-sm text-gray-500"
+					>{new Date(message.date.seconds * 1000).toLocaleString()}</time
+				>
+				<button
+					class="mt-2 bg-red-500 text-white px-2 py-1 rounded-md shadow-md hover:bg-red-600"
+					onclick={() => deletePost(message.id, message.passcode)}
+				>
+					{#if message.passcode !== ''}
+						Delete <span class="opacity-35">#</span>
+					{:else}
+						Delete
+					{/if}
+				</button>
+			</div>
+		{/each}
+	{:else}Loading{/if}
 </section>
 
 <section>

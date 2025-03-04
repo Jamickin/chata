@@ -2,6 +2,7 @@
 	import '../app.css';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import Topbar from '$lib/components/Topbar.svelte';
+	import { routes } from '../lib/routes.js';
 
 	let isMobile = $state(false);
 
@@ -18,9 +19,9 @@
 </script>
 
 {#if !isMobile}
-	<Topbar />
+	<Topbar {routes} />
 {:else}
-	<Sidebar />
+	<Sidebar {routes} />
 {/if}
 
 <main class={!isMobile ? 'mt-36' : 'mt-8'}>
