@@ -1,6 +1,6 @@
 <script>
 	import { routes } from '../routes.js';
-	let openSidebar = $state(true);
+	let openSidebar = $state(false);
 
 	function toggleSidebar() {
 		openSidebar = !openSidebar;

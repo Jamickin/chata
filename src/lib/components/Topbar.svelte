@@ -1,5 +1,5 @@
 <script>
-	import { routes } from '../routes.js';
+	import { routes } from '../routes';
 </script>
 
 <header

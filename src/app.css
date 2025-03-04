@@ -34,5 +34,9 @@ a {
 }
 
 button {
-	@apply text-slate-50 px-4 py-2 rounded-lg shadow-md cursor-pointer;
+	@apply px-4 py-2 rounded-lg shadow-md cursor-pointer transition-colors  ease-in-out;
+}
+
+input {
+	@apply border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500;
 }
