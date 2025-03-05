@@ -24,13 +24,13 @@
 	<Sidebar {routes} />
 {/if}
 
-<main class={!isMobile ? 'mt-36' : 'mt-8'}>
+<main class="{!isMobile ? 'mt-36' : 'mt-12'} px-8">
 	{@render children()}
-	<footer class="w-full p-4 text-center text-gray-500 italic">
-		<p>'This is the start of something brand new and exciting'</p>
-		<p>JW - 2025</p>
-	</footer>
 </main>
+<footer class="bg-slate-50 w-full dark:bg-slate-800 px-2">
+	<p>'This is the start of something brand new and exciting'</p>
+	<p>JW - 2025</p>
+</footer>
 
 <style>
 </style>

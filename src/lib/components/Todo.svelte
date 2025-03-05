@@ -1,5 +1,6 @@
 <script>
 	import { db } from '../firebase';
+	import Loading from './Loading.svelte';
 	import {
 		collection,
 		addDoc,
@@ -125,73 +126,48 @@
 </script>
 
 <section>
-	<h1 class="text-2xl font-bold mb-4 text-center">Todo List</h1>
+	<h3>Todo List</h3>
 
-	<div class="flex gap-2 mb-4 flex-col">
+	<div class="flex gap-2">
 		<input
-			class="flex-1 p-2 focus:ring-2"
 			placeholder="New task"
 			oninput={(e) => (newTask = e.target.value)}
 			onkeyup={(e) => e.key === 'Enter' && add()}
 			bind:value={newTask}
 		/>
 		<input
-			class="flex-1 p-2 focus:ring-2"
 			placeholder="Passcode"
 			oninput={(e) => (passcode = e.target.value)}
 			onkeyup={(e) => e.key === 'Enter' && add()}
 			bind:value={passcode}
 		/>
-		<button
-			class="p-2 bg-orange-500 hover:bg-orange-600 rounded-md text-white font-bold"
-			onclick={add}
-		>
-			Add Task
-		</button>
+		<button onclick={add}> Add Task </button>
 	</div>
 
 	<ul>
 		{#if !loading}
 			{#each tasks as task}
-				<li class="flex items-center justify-between border border-slate-300 p-2 rounded-md mb-2">
+				<li class="flex justify-between">
 					{#if editingTask && editingTask.id === task.id}
-						<div class="flex items-center w-full gap-2">
-							<input
-								type="text"
-								class="flex-1 p-2 border rounded"
-								bind:value={editTaskText}
-								placeholder="Edit task"
-							/>
-							<button class="bg-green-500 text-white p-2 rounded" onclick={saveEdit}> Save </button>
-							<button class="bg-gray-red text-black p-2 rounded" onclick={cancelEdit}>
-								Cancel
-							</button>
+						<div>
+							<input type="text" bind:value={editTaskText} placeholder="Edit task" />
+							<button onclick={saveEdit}> Save </button>
+							<button onclick={cancelEdit}> Cancel </button>
 						</div>
 					{:else}
-						<input
-							type="checkbox"
-							checked={task.done}
-							onchange={() => toggleTodo(task)}
-							class="mr-2"
-						/>
-						<span class="flex-1" class:line-through={task.done}>{task.text}</span>
-						<button
-							class="bg-orange-500 hover:bg-orange-600 mr-2"
-							onclick={() => startEditing(task)}
-						>
-							Edit
-						</button>
-						<button
-							class="bg-red-600 hover:bg-red-700"
-							onclick={() => deleteTodo(task.id, task.passcode)}
-						>
-							x
-						</button>
+						<input type="checkbox" checked={task.done} onchange={() => toggleTodo(task)} />
+						<span class:line-through={task.done}>{task.text}</span>
+						<div>
+							<button onclick={() => startEditing(task)}>Edit</button>
+							<button class="care-button" onclick={() => deleteTodo(task.id, task.passcode)}>
+								Delete
+							</button>
+						</div>
 					{/if}
 				</li>
 			{/each}
 		{:else}
-			Loading
+			<Loading />
 		{/if}
 	</ul>
 </section>

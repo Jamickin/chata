@@ -1,9 +1,9 @@
 <script>
 </script>
 
-<section>
-	<h1>Tatiana's Tidbits</h1>
+<h1>Tatiana's Tidbits</h1>
 
+<section>
 	<section>
 		<h3>I puked up the surfer but I still eat the pizza...</h3>
 	</section>

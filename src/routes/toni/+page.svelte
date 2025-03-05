@@ -2,4 +2,5 @@
 	import MessageForm from '$lib/components/MessageForm.svelte';
 </script>
 
-<main class=""><MessageForm /></main>
+<h1>Toni's Timeline</h1>
+<section><MessageForm /></section>

@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 body {
-	@apply dark:bg-slate-900 bg-slate-100 text-slate-800 dark:text-slate-50 antialiased px-8;
+	@apply dark:bg-slate-900 bg-slate-100 text-slate-800 dark:text-slate-50 antialiased;
 	font-family: 'Lexend', sans-serif;
 	scroll-behavior: smooth;
 }
@@ -10,11 +10,11 @@ h1 {
 }
 
 h2 {
-	@apply self-center text-7xl;
+	@apply text-2xl font-bold mb-2;
 }
 
 h3 {
-	@apply text-2xl font-bold mb-2;
+	@apply text-xl;
 }
 
 p {
@@ -22,7 +22,7 @@ p {
 }
 
 section {
-	@apply bg-slate-50 dark:bg-slate-800 p-6 shadow-md min-h-96 rounded-xl my-4;
+	@apply bg-slate-50 dark:bg-slate-800 p-6 shadow-md rounded-xl my-4;
 }
 
 ul {
@@ -30,13 +30,18 @@ ul {
 }
 
 a {
-	@apply text-orange-400;
+	@apply text-indigo-400;
 }
 
-button {
-	@apply px-4 py-2 rounded-lg shadow-md cursor-pointer transition-colors  ease-in-out;
+button,
+.care-button {
+	@apply px-6 py-2 rounded-lg shadow-lg cursor-pointer transition ease-in-out bg-slate-500  hover:bg-orange-500 text-slate-50;
+}
+
+.care-button {
+	@apply hover:bg-red-700;
 }
 
 input {
-	@apply border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500;
+	@apply rounded-md dark:border shadow-2xl p-2;
 }

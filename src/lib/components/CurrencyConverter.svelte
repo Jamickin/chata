@@ -45,54 +45,32 @@
 
 <section>
 	<h1>Currency Converter</h1>
-	<div class="mb-4">
-		<label for="amount" class="block text-sm font-medium text-slate-700 mb-1">Amount</label>
-		<input id="amount" type="number" bind:value={$amount} min="0" class="w-full px-3 py-2 border" />
+	<div>
+		<label for="amount">Amount</label>
+		<input id="amount" type="number" bind:value={$amount} min="0" />
 	</div>
-	<div class="mb-4">
-		<label for="fromCurrency" class="block text-sm font-medium text-slate-700 mb-1"
-			>From Currency</label
-		>
-		<select
-			id="fromCurrency"
-			bind:value={$fromCurrency}
-			class="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-		>
+	<div>
+		<label for="fromCurrency">From Currency</label>
+		<select id="fromCurrency" bind:value={$fromCurrency}>
 			{#each $currencies as currency}
 				<option value={currency}>{currency}</option>
 			{/each}
 		</select>
 	</div>
-	<div class="mb-4">
-		<label for="toCurrency" class="block text-sm font-medium text-slate-700 mb-1">To Currency</label
-		>
-		<select
-			id="toCurrency"
-			bind:value={$toCurrency}
-			class="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-		>
+	<div>
+		<label for="toCurrency">To Currency</label>
+		<select id="toCurrency" bind:value={$toCurrency}>
 			{#each $currencies as currency}
 				<option value={currency}>{currency}</option>
 			{/each}
 		</select>
 	</div>
-	<div class="flex justify-between">
-		<button
-			onclick={convert}
-			class="w-full bg-orange-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-		>
-			Convert
-		</button>
-		<button
-			onclick={fetchExchangeRates}
-			disabled={loading}
-			class="w-full ml-2 bg-slate-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
-		>
-			Refresh Rates
-		</button>
+	<div>
+		<button onclick={convert}> Convert </button>
+		<button onclick={fetchExchangeRates} disabled={loading}> Refresh Rates </button>
 	</div>
 	{#if $result}
-		<p class="mt-4 text-center text-lg">
+		<p>
 			{$amount}
 			{$fromCurrency} = {$result}
 			{$toCurrency}
