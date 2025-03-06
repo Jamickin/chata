@@ -2,8 +2,11 @@
 	import Todo from '$lib/components/Todo.svelte';
 	import CurrencyConverter from '$lib/components/CurrencyConverter.svelte';
 
-	let showTodo = false;
-	let showConverter = false;
+	import Legend from '$lib/components/Legend.svelte';
+
+	let showTodo = $state(false);
+	let showConverter = $state(false);
+	let showLegend = $state(false);
 </script>
 
 <h2>Misc Projects</h2>
@@ -21,6 +24,18 @@
 			<Todo />
 		</section>
 	{/if}
+
+	<h3>Legend:</h3>
+	<button
+		class="toggle-button"
+		onclick={() => {
+			showLegend = !showLegend;
+		}}>{!showLegend ? 'Show Legend' : 'Hide Legend'}</button
+	>
+	{#if showLegend}
+		<Legend />
+	{/if}
+
 	<h3>Converter</h3>
 	<button
 		class="toggle-button"

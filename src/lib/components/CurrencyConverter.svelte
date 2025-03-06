@@ -26,6 +26,7 @@
 
 	async function fetchExchangeRates() {
 		try {
+			loading = true;
 			const res = await fetch(`https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}`);
 			const data = await res.json();
 			exchangeRates.set(data.data);
@@ -33,6 +34,8 @@
 			localStorage.setItem(storageKey, JSON.stringify(data.data));
 		} catch (error) {
 			console.error('Failed to fetch exchange rates:', error);
+		} finally {
+			loading = false;
 		}
 	}
 
@@ -65,8 +68,10 @@
 		</select>
 	</div>
 	<div>
-		<button onclick={convert}> Convert </button>
-		<button onclick={fetchExchangeRates} disabled={loading}> Refresh Rates </button>
+		<button class="good-button" onclick={convert} disabled={loading}> Convert </button>
+		<button class="toggle-button" disabled={loading} onclick={fetchExchangeRates}>
+			{loading ? 'Loading...' : 'Refresh Rates'}
+		</button>
 	</div>
 	{#if $result}
 		<p>

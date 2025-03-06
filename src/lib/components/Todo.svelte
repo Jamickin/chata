@@ -159,7 +159,11 @@
 						<div>
 							<button class="good-button" onclick={() => startEditing(task)}>Edit</button>
 							<button class="care-button" onclick={() => deleteTodo(task.id, task.passcode)}>
-								Delete
+								{#if task.passcode !== ''}
+									Delete <span>#</span>
+								{:else}
+									Delete
+								{/if}
 							</button>
 						</div>
 					{/if}

@@ -12,6 +12,7 @@
 
 	import { onMount } from 'svelte';
 	import Loading from './Loading.svelte';
+	import Legend from './Legend.svelte';
 
 	let name = $state('');
 	let message = $state('');
@@ -164,9 +165,7 @@
 	}}>{!showLegend ? 'Show Legend' : 'Hide Legend'}</button
 >
 {#if showLegend}
-	<section>
-		<ul><li><span>#</span>: Post is Passcode Blocked</li></ul>
-	</section>
+	<Legend />
 {/if}
 
 <h3>Submit a Message:</h3>
