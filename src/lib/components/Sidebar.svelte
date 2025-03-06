@@ -10,7 +10,7 @@
 >
 	{#if openSidebar}
 		<button
-			class="absolute top-0 right-0"
+			class="toggle-button absolute top-0 right-0 side-button"
 			onclick={() => {
 				openSidebar = !openSidebar;
 			}}>x</button
@@ -28,7 +28,7 @@
 		</nav>
 	{:else}
 		<button
-			class="absolute top-0 left-0"
+			class="toggle-button absolute top-0 left-0 side-button"
 			onclick={() => {
 				openSidebar = !openSidebar;
 			}}>x</button

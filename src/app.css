@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 
 body {
-	@apply text-slate-600 dark:text-slate-50 bg-slate-50 dark:bg-slate-800 px-16 py-8;
+	@apply text-slate-600 dark:text-slate-50 bg-slate-50 dark:bg-slate-800 antialiased;
+	font-family: 'lexend';
+	font-optical-sizing: auto;
 }
 
 h1 {
@@ -13,16 +15,35 @@ h2 {
 }
 
 h3 {
-	@apply text-3xl;
+	@apply text-3xl my-2;
 }
 
 button,
-.care-button {
-	@apply border border-slate-500 px-2 uppercase rounded-md cursor-pointer transition;
+select,
+.care-button,
+textarea,
+input {
+	@apply border border-slate-500 px-2 uppercase rounded-md transition outline-none ring-0;
+}
+
+button:hover {
+	@apply bg-slate-900 text-slate-50 cursor-pointer;
 }
 
 .care-button:hover {
-	@apply bg-red-500 border-red-500;
+	@apply bg-red-500 border-red-500 text-slate-50;
+}
+
+.good-button:hover {
+	@apply bg-green-500 border-green-500 text-slate-50;
+}
+
+.toggle-button:hover {
+	@apply bg-orange-500 border-orange-500 text-slate-50;
+}
+
+.side-button {
+	@apply bg-slate-50 dark:bg-slate-900;
 }
 
 section {
@@ -30,5 +51,9 @@ section {
 }
 
 a {
-	@apply font-bold border p-2 w-full text-center;
+	@apply font-bold border border-slate-500 p-2 w-full text-center transition;
+}
+
+a:hover {
+	@apply bg-slate-900 border-slate-900 text-slate-50;
 }

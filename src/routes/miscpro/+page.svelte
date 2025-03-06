@@ -4,30 +4,34 @@
 
 	let showTodo = false;
 	let showConverter = false;
-
-	function toggleTodo() {
-		showTodo = !showTodo;
-	}
-
-	function toggleConverter() {
-		showConverter = !showConverter;
-	}
 </script>
 
 <h2>Misc Projects</h2>
-<section>
+<section class="">
 	<h3>Todo</h3>
-	<section>
-		<button aria-label="showTodo" onclick={toggleTodo}>Show Todo</button>
-		{#if showTodo}
+	<button
+		class="toggle-button"
+		aria-label="showTodo"
+		onclick={() => {
+			showTodo = !showTodo;
+		}}>{!showTodo ? 'Show Todo' : 'Hide Todo'}</button
+	>
+	{#if showTodo}
+		<section>
 			<Todo />
-		{/if}
-	</section>
+		</section>
+	{/if}
 	<h3>Converter</h3>
-	<section>
-		<button aria-label="showConverter" onclick={toggleConverter}>Show Converter</button>
-		{#if showConverter}
+	<button
+		class="toggle-button"
+		aria-label="showConverter"
+		onclick={() => {
+			showConverter = !showConverter;
+		}}>{!showConverter ? 'Show Converter' : 'Hide Converter'}</button
+	>
+	{#if showConverter}
+		<section>
 			<CurrencyConverter />
-		{/if}
-	</section>
+		</section>
+	{/if}
 </section>

@@ -100,7 +100,6 @@
 			alert('Task text cannot be empty!');
 			return;
 		}
-
 		try {
 			await updateDoc(doc(db, 'todos', editingTask.id), {
 				text: editTaskText
@@ -139,7 +138,7 @@
 		onkeyup={(e) => e.key === 'Enter' && add()}
 		bind:value={passcode}
 	/>
-	<button onclick={add}> Add Task </button>
+	<button class="good-button" onclick={add}> Add Task </button>
 </section>
 
 <h3>Tasks:</h3>
@@ -151,15 +150,17 @@
 					{#if editingTask && editingTask.id === task.id}
 						<div>
 							<input type="text" bind:value={editTaskText} placeholder="Edit task" />
-							<button onclick={saveEdit}> Save </button>
-							<button onclick={cancelEdit}> Cancel </button>
+							<button class="good-button" onclick={saveEdit}> Save </button>
+							<button class="care-button" onclick={cancelEdit}> Cancel </button>
 						</div>
 					{:else}
 						<input type="checkbox" checked={task.done} onchange={() => toggleTodo(task)} />
 						<span class:line-through={task.done}>{task.text}</span>
 						<div>
-							<button onclick={() => startEditing(task)}>Edit</button>
-							<button onclick={() => deleteTodo(task.id, task.passcode)}> Delete </button>
+							<button class="good-button" onclick={() => startEditing(task)}>Edit</button>
+							<button class="care-button" onclick={() => deleteTodo(task.id, task.passcode)}>
+								Delete
+							</button>
 						</div>
 					{/if}
 				</li>

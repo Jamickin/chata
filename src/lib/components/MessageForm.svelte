@@ -1,6 +1,15 @@
 <script>
 	import { db } from '../firebase';
-	import { collection, addDoc, Timestamp, getDocs, deleteDoc, doc } from 'firebase/firestore';
+	import {
+		collection,
+		addDoc,
+		Timestamp,
+		getDocs,
+		deleteDoc,
+		doc,
+		updateDoc
+	} from 'firebase/firestore';
+
 	import { onMount } from 'svelte';
 	import Loading from './Loading.svelte';
 
@@ -10,6 +19,12 @@
 	let passcode = $state('');
 	let isMobile = $state(false);
 	let loading = $state(false);
+	let showMessages = $state(false);
+	let showLegend = $state(false);
+	let showSubmit = $state(false);
+	let editingPost = $state(null);
+	let editPostText = $state('');
+	let editPostPasscode = $state('');
 
 	$effect(() => {
 		if (typeof window !== 'undefined') {
@@ -66,59 +81,132 @@
 			console.error('Error deleting post:', error);
 		}
 	}
+
+	function startEditing(message) {
+		const userPasscode = prompt('Enter the passcode to edit this message:');
+		if (userPasscode !== message.passcode) {
+			alert('Incorrect passcode! Editing canceled.');
+			return;
+		}
+		editingPost = message;
+		editPostText = message.message;
+		editPostPasscode = message.passcode;
+	}
+
+	async function saveEdit() {
+		if (!editPostText.trim()) {
+			alert('Message text cannot be empty!');
+			return;
+		}
+		try {
+			await updateDoc(doc(db, 'messages', editingPost.id), {
+				message: editPostText
+			});
+			messages = messages.map((m) =>
+				m.id === editingPost.id ? { ...m, message: editPostText } : m
+			);
+			editingPost = null;
+			editPostText = '';
+			editPostPasscode = '';
+		} catch (error) {
+			console.error('Error editing message:', error);
+		}
+	}
+
+	function cancelEdit() {
+		editingPost = null;
+		editPostText = '';
+		editPostPasscode = '';
+	}
 </script>
 
 <h3>Messages:</h3>
-<section>
-	{#if !loading}
-		{#each messages as message (message.id)}
-			<div>
-				<strong>{message.name} said:</strong>
-				<p>{message.message}</p>
-				<time>{new Date(message.date.seconds * 1000).toLocaleString()}</time>
-				<button class="care-button" onclick={() => deletePost(message.id, message.passcode)}>
-					{#if message.passcode !== ''}
-						Delete <span>#</span>
-					{:else}
-						Delete
-					{/if}
-				</button>
-			</div>
-		{/each}
-	{:else}<Loading />{/if}
-</section>
+<button
+	class="toggle-button"
+	onclick={() => {
+		showMessages = !showMessages;
+	}}>{!showMessages ? 'Show Messages' : 'Hide Messages'}</button
+>
+{#if showMessages}
+	<section>
+		{#if !loading}
+			{#each messages as message (message.id)}
+				{#if editingPost && editingPost.id === message.id}<div>
+						<label for="edit post">Edit Post</label>
+						<input type="text" bind:value={editPostText} placeholder="Edit post" />
+						<button class="good-button" onclick={saveEdit}> Save </button>
+						<button class="care-button" onclick={cancelEdit}> Cancel </button>
+					</div>{:else}
+					<div class="flex flex-col my-4">
+						<strong>{message.name} said:</strong>
+						<p>{message.message}</p>
+						<time class="opacity-55">{new Date(message.date.seconds * 1000).toLocaleString()}</time>
+						<button class="care-button" onclick={() => deletePost(message.id, message.passcode)}>
+							{#if message.passcode !== ''}
+								Delete <span>#</span>
+							{:else}
+								Delete
+							{/if}
+						</button>
+						<button class="good-button" onclick={() => startEditing(message)}>Edit</button>
+					</div>
+				{/if}
+			{/each}
+		{:else}<Loading />{/if}
+	</section>
+{/if}
 
 <h3>Legend:</h3>
-<section>
-	<ul><li><span>#</span>: Post is Passcode Blocked</li></ul>
-</section>
+<button
+	class="toggle-button"
+	onclick={() => {
+		showLegend = !showLegend;
+	}}>{!showLegend ? 'Show Legend' : 'Hide Legend'}</button
+>
+{#if showLegend}
+	<section>
+		<ul><li><span>#</span>: Post is Passcode Blocked</li></ul>
+	</section>
+{/if}
 
 <h3>Submit a Message:</h3>
-<section>
-	<form onsubmit={handleSubmit}>
-		<input type="text" placeholder="Your Name" bind:value={name} required />
-		<textarea
-			placeholder="Your Message"
-			bind:value={message}
-			required
-			onkeydown={(e) => {
-				if (e.key === 'Enter' && !e.shiftKey) {
-					e.preventDefault();
-					handleSubmit(e);
-				}
-			}}
-		></textarea>
-		<input type="text" placeholder="Passcode" bind:value={passcode} />
-		<button type="submit">Post</button>
-	</form>
-	<div>
-		<h3>Preview:</h3>
-		<div if={message}>
-			<strong>{name || 'Your Name'} said:</strong>
-			<p>{message || 'Your message will appear here.'}</p>
+<button
+	class="toggle-button"
+	onclick={() => {
+		showSubmit = !showSubmit;
+	}}>{!showSubmit ? 'Show Submit' : 'Hide Submit'}</button
+>
+{#if showSubmit}
+	<section class="flex {!isMobile ? '' : 'flex-col'} ">
+		<form class="flex flex-col gap-2 {!isMobile ? 'w-1/2' : ''}" onsubmit={handleSubmit}>
+			<div class="flex flex-col gap-2">
+				<input type="text" placeholder="Your Name" bind:value={name} required />
+				<input type="text" placeholder="Passcode" bind:value={passcode} />
+			</div>
+			<textarea
+				class="min-h-8"
+				placeholder="Your Message"
+				bind:value={message}
+				required
+				maxlength="255"
+				onkeydown={(e) => {
+					if (e.key === 'Enter' && !e.shiftKey) {
+						e.preventDefault();
+						handleSubmit(e);
+					}
+				}}
+			></textarea>
+			<button type="submit">Post</button>
+		</form>
+		<div class="{!isMobile ? 'w-1/2' : ''} text-center">
+			<h3>Preview:</h3>
+			<div class="w-full" if={message}>
+				<strong>{name || 'Your Name'} said:</strong>
+				<p class="w-full">{message || 'Your message will appear here.'}</p>
+			</div>
 		</div>
-	</div>
-</section>
+	</section>
+{/if}
 
 <style>
 	span {
