@@ -125,29 +125,29 @@
 	}
 </script>
 
+<h3>New Task:</h3>
 <section>
-	<h3>Todo List</h3>
+	<input
+		placeholder="New task"
+		oninput={(e) => (newTask = e.target.value)}
+		onkeyup={(e) => e.key === 'Enter' && add()}
+		bind:value={newTask}
+	/>
+	<input
+		placeholder="Passcode"
+		oninput={(e) => (passcode = e.target.value)}
+		onkeyup={(e) => e.key === 'Enter' && add()}
+		bind:value={passcode}
+	/>
+	<button onclick={add}> Add Task </button>
+</section>
 
-	<div class="flex gap-2">
-		<input
-			placeholder="New task"
-			oninput={(e) => (newTask = e.target.value)}
-			onkeyup={(e) => e.key === 'Enter' && add()}
-			bind:value={newTask}
-		/>
-		<input
-			placeholder="Passcode"
-			oninput={(e) => (passcode = e.target.value)}
-			onkeyup={(e) => e.key === 'Enter' && add()}
-			bind:value={passcode}
-		/>
-		<button onclick={add}> Add Task </button>
-	</div>
-
+<h3>Tasks:</h3>
+<section>
 	<ul>
 		{#if !loading}
 			{#each tasks as task}
-				<li class="flex justify-between">
+				<li>
 					{#if editingTask && editingTask.id === task.id}
 						<div>
 							<input type="text" bind:value={editTaskText} placeholder="Edit task" />
@@ -159,9 +159,7 @@
 						<span class:line-through={task.done}>{task.text}</span>
 						<div>
 							<button onclick={() => startEditing(task)}>Edit</button>
-							<button class="care-button" onclick={() => deleteTodo(task.id, task.passcode)}>
-								Delete
-							</button>
+							<button onclick={() => deleteTodo(task.id, task.passcode)}> Delete </button>
 						</div>
 					{/if}
 				</li>

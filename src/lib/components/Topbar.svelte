@@ -2,21 +2,14 @@
 	import { routes } from '../routes';
 </script>
 
-<header
-	class="flex fixed gap-4 items-center shadow-md justify-between backdrop-blur-3xl w-full left-0 top-0 px-4"
->
-	<h3>Welcome to Chadz</h3>
-	<nav class="flex items-center h-full w-full">
-		<div class="flex items-center h-full w-full justify-around gap-8 py-8">
-			{#each routes as route}
-				<a href={route.path}>{route.name}</a>
-			{/each}
-		</div>
+<header class="backdrop-blur-3xl fixed top-0 left-0 w-full p-4">
+	<h1>Welcome To Chadz</h1>
+	<nav class="flex gap-4">
+		{#each routes as route}
+			<a href={route.path}>{route.name}</a>
+		{/each}
 	</nav>
 </header>
 
 <style>
-	div > a {
-		@apply hover:underline border h-full w-full text-center uppercase;
-	}
 </style>

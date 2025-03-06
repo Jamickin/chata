@@ -1,18 +1,11 @@
 <script>
 </script>
 
-<h1>Tatiana's Tidbits</h1>
+<h2>Tatiana's Tidbits</h2>
 
 <section>
-	<section>
-		<h3>I puked up the surfer but I still eat the pizza...</h3>
-	</section>
+	<section>I puked up the surfer but I still eat the pizza...</section>
 </section>
 
 <style>
-	h3::before,
-	h3::after {
-		content: '"';
-		font-size: 4rem;
-	}
 </style>

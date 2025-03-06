@@ -68,6 +68,7 @@
 	}
 </script>
 
+<h3>Messages:</h3>
 <section>
 	{#if !loading}
 		{#each messages as message (message.id)}
@@ -87,11 +88,12 @@
 	{:else}<Loading />{/if}
 </section>
 
+<h3>Legend:</h3>
 <section>
-	<h3>Legend:</h3>
 	<ul><li><span>#</span>: Post is Passcode Blocked</li></ul>
 </section>
 
+<h3>Submit a Message:</h3>
 <section>
 	<form onsubmit={handleSubmit}>
 		<input type="text" placeholder="Your Name" bind:value={name} required />
@@ -117,3 +119,9 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	span {
+		@apply opacity-55;
+	}
+</style>

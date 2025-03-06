@@ -44,7 +44,6 @@
 </script>
 
 <section>
-	<h1>Currency Converter</h1>
 	<div>
 		<label for="amount">Amount</label>
 		<input id="amount" type="number" bind:value={$amount} min="0" />
