@@ -1,10 +1,19 @@
 @import 'tailwindcss';
 
 /* Base styles */
+:root {
+	color-scheme: light dark;
+}
+
 body {
-	@apply text-slate-600 dark:text-slate-50 bg-slate-50 dark:bg-slate-800 antialiased;
+	@apply text-slate-600 bg-slate-50 transition-colors duration-200;
 	font-family: 'Lexend', sans-serif;
 	font-optical-sizing: auto;
+}
+
+/* Dark mode overrides */
+.dark body {
+	@apply text-slate-50 bg-slate-800;
 }
 
 /* Typography */
@@ -106,7 +115,7 @@ li {
 
 .mobile-menu {
 	@apply fixed top-0 left-0 h-full bg-slate-100 dark:bg-slate-900 z-40 transition-all duration-300 ease-in-out 
-         shadow-lg p-4 overflow-y-auto;
+       shadow-lg p-4 overflow-y-auto;
 }
 
 .mobile-menu-closed {
@@ -330,4 +339,27 @@ time {
 /* Custom checkboxes */
 input[type='checkbox'] {
 	@apply w-5 h-5 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-400;
+}
+
+/* Explicitly add dark mode transition for smoother theme changes */
+html {
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
+}
+
+.dark-mode-toggle-visible {
+	opacity: 1;
+	visibility: visible;
+	transition:
+		opacity 0.3s ease,
+		visibility 0.3s ease;
+}
+
+.dark-mode-toggle-hidden {
+	opacity: 0;
+	visibility: hidden;
+	transition:
+		opacity 0.3s ease,
+		visibility 0.3s ease;
 }

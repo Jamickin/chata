@@ -1,28 +1,14 @@
 <script>
 	import { onMount } from 'svelte';
 
+	// Create a store to track dark mode state
 	let darkMode = $state(false);
+	let mounted = $state(false);
 
-	// Initialize on mount
-	onMount(() => {
-		// Check for saved preference or system preference
-		const savedTheme = localStorage.getItem('theme');
-		if (
-			savedTheme === 'dark' ||
-			(!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-		) {
-			darkMode = true;
-			document.documentElement.classList.add('dark');
-		} else {
-			darkMode = false;
-			document.documentElement.classList.remove('dark');
-		}
-	});
-
-	// Watch for changes and apply them
-	$effect(() => {
+	// Function to apply dark mode class
+	function applyTheme(isDark) {
 		if (typeof document !== 'undefined') {
-			if (darkMode) {
+			if (isDark) {
 				document.documentElement.classList.add('dark');
 				localStorage.setItem('theme', 'dark');
 			} else {
@@ -30,8 +16,61 @@
 				localStorage.setItem('theme', 'light');
 			}
 		}
+	}
+
+	// Initialize dark mode based on local storage or system preference
+	onMount(() => {
+		const savedTheme = localStorage.getItem('theme');
+		const prefersDark =
+			window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+		// Set the initial state
+		if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+			darkMode = true;
+		} else {
+			darkMode = false;
+		}
+
+		// Apply the theme based on initial state
+		applyTheme(darkMode);
+
+		// Mark as mounted to prevent changes during SSR
+		mounted = true;
+
+		// Set up listener for system preference changes
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		const handleChange = (e) => {
+			if (!localStorage.getItem('theme')) {
+				darkMode = e.matches;
+				applyTheme(e.matches);
+			}
+		};
+
+		if (mediaQuery.addEventListener) {
+			mediaQuery.addEventListener('change', handleChange);
+		} else {
+			// Fallback for older browsers
+			mediaQuery.addListener(handleChange);
+		}
+
+		return () => {
+			if (mediaQuery.removeEventListener) {
+				mediaQuery.removeEventListener('change', handleChange);
+			} else {
+				// Fallback for older browsers
+				mediaQuery.removeListener(handleChange);
+			}
+		};
 	});
 
+	// Watch for changes in dark mode state
+	$effect(() => {
+		if (mounted) {
+			applyTheme(darkMode);
+		}
+	});
+
+	// Toggle dark mode
 	function toggleDarkMode() {
 		darkMode = !darkMode;
 	}
@@ -39,7 +78,7 @@
 
 <button
 	aria-label="Toggle dark mode"
-	class="fixed bottom-20 right-4 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+	class="fixed bottom-20 right-4 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
 	on:click={toggleDarkMode}
 >
 	{#if darkMode}
@@ -54,6 +93,7 @@
 			stroke-width="2"
 			stroke-linecap="round"
 			stroke-linejoin="round"
+			class="text-yellow-500"
 		>
 			<circle cx="12" cy="12" r="5"></circle>
 			<line x1="12" y1="1" x2="12" y2="3"></line>
@@ -77,6 +117,7 @@
 			stroke-width="2"
 			stroke-linecap="round"
 			stroke-linejoin="round"
+			class="text-slate-700"
 		>
 			<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
 		</svg>
