@@ -124,53 +124,71 @@
 	}
 </script>
 
-<h3>New Task:</h3>
-<section>
-	<input
-		placeholder="New task"
-		oninput={(e) => (newTask = e.target.value)}
-		onkeyup={(e) => e.key === 'Enter' && add()}
-		bind:value={newTask}
-	/>
-	<input
-		placeholder="Passcode"
-		oninput={(e) => (passcode = e.target.value)}
-		onkeyup={(e) => e.key === 'Enter' && add()}
-		bind:value={passcode}
-	/>
-	<button class="good-button" onclick={add}> Add Task </button>
-</section>
+<div class="todo-container">
+	<h3>New Task</h3>
+	<div class="form-control">
+		<input
+			placeholder="New task"
+			on:input={(e) => (newTask = e.target.value)}
+			on:keyup={(e) => e.key === 'Enter' && add()}
+			bind:value={newTask}
+			aria-label="New task"
+		/>
+		<input
+			placeholder="Passcode"
+			on:input={(e) => (passcode = e.target.value)}
+			on:keyup={(e) => e.key === 'Enter' && add()}
+			bind:value={passcode}
+			aria-label="Passcode"
+			type="password"
+		/>
+		<button class="good-button" on:click={add}>Add Task</button>
+	</div>
 
-<h3>Tasks:</h3>
-<section>
-	<ul>
-		{#if !loading}
-			{#each tasks as task}
-				<li>
-					{#if editingTask && editingTask.id === task.id}
-						<div>
-							<input type="text" bind:value={editTaskText} placeholder="Edit task" />
-							<button class="good-button" onclick={saveEdit}> Save </button>
-							<button class="care-button" onclick={cancelEdit}> Cancel </button>
-						</div>
-					{:else}
-						<input type="checkbox" checked={task.done} onchange={() => toggleTodo(task)} />
-						<span class:line-through={task.done}>{task.text}</span>
-						<div>
-							<button class="good-button" onclick={() => startEditing(task)}>Edit</button>
-							<button class="care-button" onclick={() => deleteTodo(task.id, task.passcode)}>
-								{#if task.passcode !== ''}
-									Delete <span>#</span>
-								{:else}
-									Delete
-								{/if}
-							</button>
-						</div>
-					{/if}
-				</li>
-			{/each}
-		{:else}
+	<h3>Tasks</h3>
+	<div class="mt-4">
+		{#if loading}
 			<Loading />
+		{:else if tasks.length === 0}
+			<p class="text-center py-4">No tasks yet. Add your first one above!</p>
+		{:else}
+			<ul class="space-y-2">
+				{#each tasks as task}
+					<li
+						class="border border-slate-300 dark:border-slate-600 p-3 rounded bg-white dark:bg-slate-800"
+					>
+						{#if editingTask && editingTask.id === task.id}
+							<div class="form-control">
+								<input type="text" bind:value={editTaskText} placeholder="Edit task" />
+								<div class="button-group">
+									<button class="good-button" on:click={saveEdit}>Save</button>
+									<button class="care-button" on:click={cancelEdit}>Cancel</button>
+								</div>
+							</div>
+						{:else}
+							<div class="flex items-center gap-2 mb-2">
+								<input
+									type="checkbox"
+									class="w-5 h-5"
+									checked={task.done}
+									on:change={() => toggleTodo(task)}
+									aria-label="Mark as complete"
+								/>
+								<span class={task.done ? 'line-through' : ''}>{task.text}</span>
+							</div>
+							<div class="button-group">
+								<button class="good-button" on:click={() => startEditing(task)}>Edit</button>
+								<button class="care-button" on:click={() => deleteTodo(task.id, task.passcode)}>
+									Delete
+									{#if task.passcode !== ''}
+										<span class="font-mono ml-1">#</span>
+									{/if}
+								</button>
+							</div>
+						{/if}
+					</li>
+				{/each}
+			</ul>
 		{/if}
-	</ul>
-</section>
+	</div>
+</div>

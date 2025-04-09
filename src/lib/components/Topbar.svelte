@@ -2,14 +2,15 @@
 	import { routes } from '../routes';
 </script>
 
-<header class="backdrop-blur-3xl fixed top-0 left-0 w-full p-4 z-50">
-	<h1>Welcome To Chadz</h1>
-	<nav class="flex gap-4 mt-4">
-		{#each routes as route}
-			<a href={route.path}>{route.name}</a>
-		{/each}
-	</nav>
+<header
+	class="fixed top-0 left-0 w-full p-4 z-30 bg-slate-50/80 dark:bg-slate-800/80 backdrop-blur-lg shadow-sm"
+>
+	<div class="max-w-7xl mx-auto">
+		<h1 class="text-3xl md:text-4xl">Welcome To Chadz</h1>
+		<nav class="hidden md:flex gap-2 mt-4 flex-wrap">
+			{#each routes as route}
+				<a href={route.path} class="md:w-auto">{route.name}</a>
+			{/each}
+		</nav>
+	</div>
 </header>
-
-<style>
-</style>

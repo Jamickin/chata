@@ -2,35 +2,57 @@
 	import '../app.css';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import Topbar from '$lib/components/Topbar.svelte';
-	import { routes } from '../lib/routes.js';
-
-	let isMobile = $state(false);
-
-	$effect(() => {
-		if (typeof window !== 'undefined') {
-			isMobile = window.innerWidth <= 768;
-			const updateWidth = () => (isMobile = window.innerWidth <= 768);
-			window.addEventListener('resize', updateWidth);
-			return () => window.removeEventListener('resize', updateWidth);
-		}
-	});
+	import DarkModeToggle from '$lib/components/DarkModeToggle.svelte';
+	import NotificationBell from '$lib/components/NotificationBell.svelte';
+	import { onMount } from 'svelte';
 
 	let { children } = $props();
+	let pageLoaded = $state(false);
+	let currentPath = $state('/');
+
+	onMount(() => {
+		// Add a small delay to ensure components are registered
+		setTimeout(() => {
+			pageLoaded = true;
+			currentPath = window.location.pathname;
+		}, 100);
+
+		// Listen for route changes
+		const handleRouteChange = () => {
+			currentPath = window.location.pathname;
+		};
+
+		window.addEventListener('popstate', handleRouteChange);
+
+		return () => {
+			window.removeEventListener('popstate', handleRouteChange);
+		};
+	});
 </script>
 
-{#if !isMobile}
-	<Topbar {routes} />
-{:else}
-	<Sidebar {routes} />
+<!-- Always include the sidebar (it's hidden by default on mobile) -->
+<Sidebar />
+
+<!-- Always show the topbar (it hides the nav on mobile) -->
+<Topbar />
+
+<!-- Dark Mode Toggle - Only visible on non-home pages -->
+{#if pageLoaded && currentPath !== '/'}
+	<DarkModeToggle />
 {/if}
 
-<main class={!isMobile ? 'my-36 mx-12' : 'mx-6 mt-16 mb-24'}>
+<!-- Notification Bell - Only visible on non-home pages -->
+{#if pageLoaded && currentPath !== '/'}
+	<NotificationBell />
+{/if}
+
+<!-- Main content with smooth fade-in animation -->
+<main class="max-w-7xl mx-auto px-4 pt-42 pb-20 animate-fade-in">
 	{@render children()}
 </main>
-<footer class="w-full py-2 fixed left-0 bottom-0 text-center dark:text-slate-50 backdrop-blur-sm">
-	<p>'This is the start of something brand new and exciting'</p>
-	<p>JW - 2025</p>
-</footer>
 
-<style>
-</style>
+<footer class="footer">
+	<div class="max-w-7xl mx-auto px-4">
+		<p>"This is the start of something brand new and exciting" JW, 2025</p>
+	</div>
+</footer>

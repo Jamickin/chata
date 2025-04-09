@@ -1,40 +1,34 @@
 <script>
 	import { routes } from '../routes.js';
-	let openSidebar = $state(true);
+	let openSidebar = $state(false);
+
+	function toggleSidebar() {
+		openSidebar = !openSidebar;
+	}
 </script>
 
-<header
-	class="h-full text-center {openSidebar
-		? ' w-1/3'
-		: ''} fixed top-0 left-0 backdrop-blur-2xl z-50 py-12"
->
-	{#if openSidebar}
-		<button
-			class="toggle-button absolute top-0 right-0 side-button"
-			onclick={() => {
-				openSidebar = !openSidebar;
-			}}>x</button
-		>
-		<h3>Chadz</h3>
-		<nav class="flex flex-col w-full gap-4 my-4">
+<button class="side-button" aria-label="Toggle menu" on:click={toggleSidebar}>
+	{openSidebar ? 'X' : '☰'}
+</button>
+
+<aside class="mobile-menu {openSidebar ? 'mobile-menu-open' : 'mobile-menu-closed'} w-64">
+	<div class="py-4">
+		<h3 class="text-2xl mb-4">Chadz</h3>
+		<nav class="flex flex-col w-full gap-3">
 			{#each routes as route}
-				<a
-					onclick={() => {
-						openSidebar = !openSidebar;
-					}}
-					href={route.path}>{route.name}</a
-				>
+				<a href={route.path} on:click={toggleSidebar}>
+					{route.name}
+				</a>
 			{/each}
 		</nav>
-	{:else}
-		<button
-			class="toggle-button absolute top-0 left-0 side-button"
-			onclick={() => {
-				openSidebar = !openSidebar;
-			}}>x</button
-		>
-	{/if}
-</header>
+	</div>
+</aside>
 
-<style>
-</style>
+<!-- Add an overlay when sidebar is open on mobile -->
+{#if openSidebar}
+	<div
+		class="fixed inset-0 bg-black/30 backdrop-blur-sm z-30 md:hidden"
+		on:click={toggleSidebar}
+		aria-hidden="true"
+	></div>
+{/if}
