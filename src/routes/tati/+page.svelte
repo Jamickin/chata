@@ -11,20 +11,6 @@
 			content: 'I puked up the surfer but I still eat the pizza...',
 			date: 'April 5, 2025',
 			tags: ['thoughts', 'creativity']
-		},
-		{
-			id: 2,
-			title: 'Morning Reflections',
-			content: "The sunrise doesn't wait for anyone. Neither should your dreams.",
-			date: 'April 2, 2025',
-			tags: ['inspiration', 'morning']
-		},
-		{
-			id: 3,
-			title: 'Weekend Plans',
-			content: 'Sometimes the best plan is no plan at all. Freedom in spontaneity.',
-			date: 'March 28, 2025',
-			tags: ['weekend', 'life']
 		}
 	]);
 
