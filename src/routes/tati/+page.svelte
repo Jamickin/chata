@@ -1,71 +1,135 @@
 <script>
-	import AnimatedBackground from '$lib/components/AnimatedBackground.svelte';
-	import FeatureCard from '$lib/components/FeatureCard.svelte';
 	import { onMount } from 'svelte';
 
-	// Tidbits content
-	let tidbits = $state([
-		{
-			id: 1,
-			title: 'On Creativity',
-			content: 'I puked up the surfer but I still eat the pizza...',
-			date: 'April 5, 2025',
-			tags: ['thoughts', 'creativity']
-		}
-	]);
+	// --- NEW: Passcode Configuration ---
+	// IMPORTANT: Change this to a secret passcode only you and your wife know.
+	const CORRECT_PASSCODE = 's3cretTidbitP@ss';
 
+	// --- STATE ---
+	let tidbits = $state([]);
 	let selectedTag = $state('all');
 	let searchQuery = $state('');
-	let filteredTidbits = $state([]);
 
-	// Get all unique tags
-	let allTags = $state([]);
+	// --- NEW: State for the "Add Tidbit" Modal ---
+	let showModal = $state(false);
+	let isAuthenticated = $state(false);
+	let enteredPasscode = $state('');
+	let passcodeError = $state('');
+	let newTidbit = $state({ title: '', content: '', tags: '' });
 
-	$effect(() => {
-		const tags = new Set();
-		tags.add('all');
+	// --- PERSISTENCE WITH LOCAL STORAGE ---
+	// Load tidbits from local storage when the component mounts
+	onMount(() => {
+		const savedTidbits = localStorage.getItem('tidbits');
+		if (savedTidbits) {
+			tidbits = JSON.parse(savedTidbits);
+		} else {
+			// Default tidbit if nothing is saved
+			tidbits = [
+				{
+					id: 1,
+					title: 'On Creativity',
+					content: 'I puked up the surfer but I still eat the pizza...',
+					date: 'April 5, 2025',
+					tags: ['thoughts', 'creativity']
+				}
+			];
+		}
+	});
 
+	// --- DERIVED STATE & EFFECTS ---
+	let allTags = $derived.by(() => {
+		const tags = new Set(['all']);
 		tidbits.forEach((tidbit) => {
 			tidbit.tags.forEach((tag) => tags.add(tag));
 		});
-
-		allTags = Array.from(tags);
+		return Array.from(tags);
 	});
 
-	// Filter tidbits based on selected tag and search query
+	let filteredTidbits = $derived.by(() => {
+		// Filter by tag
+		const tagMatch = (tidbit) => selectedTag === 'all' || tidbit.tags.includes(selectedTag);
+
+		// Filter by search
+		const searchLower = searchQuery.toLowerCase();
+		const searchMatch = (tidbit) =>
+			searchQuery === '' ||
+			tidbit.content.toLowerCase().includes(searchLower) ||
+			tidbit.title.toLowerCase().includes(searchLower);
+
+		return tidbits
+			.filter((tidbit) => tagMatch(tidbit) && searchMatch(tidbit))
+			.sort((a, b) => b.id - a.id);
+	});
+
+	// --- NEW: Effect to save tidbits to local storage whenever they change ---
 	$effect(() => {
-		filteredTidbits = tidbits.filter((tidbit) => {
-			// Filter by tag
-			const tagMatch = selectedTag === 'all' || tidbit.tags.includes(selectedTag);
-
-			// Filter by search
-			const searchLower = searchQuery.toLowerCase();
-			const contentMatch = tidbit.content.toLowerCase().includes(searchLower);
-			const titleMatch = tidbit.title.toLowerCase().includes(searchLower);
-
-			return tagMatch && (contentMatch || titleMatch || searchQuery === '');
-		});
+		// The initial empty array on startup shouldn't clear storage
+		if (tidbits.length > 0) {
+			localStorage.setItem('tidbits', JSON.stringify(tidbits));
+		}
 	});
 
+	// --- FUNCTIONS ---
 	function handleTagSelect(tag) {
 		selectedTag = tag;
 	}
 
-	// Animated background options
-	let colorScheme = $state('pink');
-	let backgroundVariant = $state('gradient');
+	// --- NEW: Functions to handle the modal and form submission ---
+	function openModal() {
+		showModal = true;
+	}
 
-	function changeBackground(variant) {
-		backgroundVariant = variant;
+	function closeModal() {
+		showModal = false;
+		isAuthenticated = false; // Reset authentication on close
+		enteredPasscode = '';
+		passcodeError = '';
+	}
+
+	function handlePasscodeSubmit(event) {
+		event.preventDefault(); // <-- Add this line
+		if (enteredPasscode === CORRECT_PASSCODE) {
+			isAuthenticated = true;
+			passcodeError = '';
+		} else {
+			passcodeError = 'Incorrect passcode. Please try again.';
+		}
+	}
+
+	function handleAddTidbit(event) {
+		event.preventDefault(); // <-- Add this line
+		if (!newTidbit.title || !newTidbit.content) {
+			alert('Please fill out both title and content.');
+			return;
+		}
+
+		const newEntry = {
+			id: Date.now(), // Use timestamp for a unique ID
+			title: newTidbit.title,
+			content: newTidbit.content,
+			date: new Date().toLocaleDateString('en-US', {
+				month: 'long',
+				day: 'numeric',
+				year: 'numeric'
+			}),
+			// Split comma-separated tags into an array, and trim whitespace
+			tags: newTidbit.tags
+				.split(',')
+				.map((tag) => tag.trim())
+				.filter((tag) => tag)
+		};
+
+		tidbits = [newEntry, ...tidbits];
+
+		// Reset form and close modal
+		newTidbit = { title: '', content: '', tags: '' };
+		closeModal();
 	}
 </script>
 
-<!-- Animated background -->
-<AnimatedBackground variant={backgroundVariant} opacity={0.05} {colorScheme} />
-
-<!-- Header section -->
 <div class="max-w-4xl mx-auto mb-12">
-	<div class="text-center mb-8">
+	<div class="text-center mb-8 relative">
 		<h1
 			class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600"
 		>
@@ -74,9 +138,17 @@
 		<p class="text-lg text-slate-600 dark:text-slate-300">
 			Random thoughts, inspirations, and reflections
 		</p>
+
+		<div class="mt-4">
+			<button
+				onclick={openModal}
+				class="bg-pink-500 text-white font-bold py-2 px-4 rounded-full hover:bg-pink-600 transition-colors shadow-lg"
+			>
+				+ Add New Tidbit
+			</button>
+		</div>
 	</div>
 
-	<!-- Search and filter -->
 	<div
 		class="mb-8 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4"
 	>
@@ -114,94 +186,16 @@
 							<option value={tag}>{tag.charAt(0).toUpperCase() + tag.slice(1)}</option>
 						{/each}
 					</select>
-					<div
-						class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-700 dark:text-slate-300"
-					>
-						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M19 9l-7 7-7-7"
-							></path>
-						</svg>
-					</div>
 				</div>
 			</div>
 		</div>
-
-		<!-- Tags quick selection -->
-		<div class="mt-3 flex flex-wrap gap-2">
-			{#each allTags as tag}
-				<button
-					class="px-3 py-1 text-sm rounded-full transition-colors {selectedTag === tag
-						? 'bg-pink-500 text-white'
-						: 'bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600'}"
-					onclick={() => handleTagSelect(tag)}
-				>
-					{tag.charAt(0).toUpperCase() + tag.slice(1)}
-				</button>
-			{/each}
-		</div>
-	</div>
-
-	<!-- Background style toggle -->
-	<div class="flex justify-center gap-3 mb-8">
-		<button
-			class="px-3 py-1 text-sm rounded-md transition-colors {backgroundVariant === 'gradient'
-				? 'bg-pink-500 text-white'
-				: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700'}"
-			onclick={() => changeBackground('gradient')}
-		>
-			Gradient
-		</button>
-		<button
-			class="px-3 py-1 text-sm rounded-md transition-colors {backgroundVariant === 'particles'
-				? 'bg-pink-500 text-white'
-				: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700'}"
-			onclick={() => changeBackground('particles')}
-		>
-			Particles
-		</button>
-		<button
-			class="px-3 py-1 text-sm rounded-md transition-colors {backgroundVariant === 'waves'
-				? 'bg-pink-500 text-white'
-				: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700'}"
-			onclick={() => changeBackground('waves')}
-		>
-			Waves
-		</button>
 	</div>
 </div>
 
-<!-- Tidbits content -->
 <div class="max-w-4xl mx-auto">
-	{#if filteredTidbits.length === 0}
-		<div
-			class="text-center py-12 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700"
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="mx-auto h-12 w-12 text-slate-400"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 13a1 1 0 100-2 1 1 0 000 2z"
-				/>
-			</svg>
-			<h3 class="mt-4 text-lg font-medium text-slate-700 dark:text-slate-300">No tidbits found</h3>
-			<p class="mt-2 text-slate-500 dark:text-slate-400">
-				Try changing your search or filter settings
-			</p>
-		</div>
-	{:else}
+	{#if filteredTidbits.length === 0}{:else}
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-			{#each filteredTidbits as tidbit}
+			{#each filteredTidbits as tidbit (tidbit.id)}
 				<div
 					class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-md transition-shadow"
 				>
@@ -215,12 +209,12 @@
 
 						<div class="flex flex-wrap gap-2">
 							{#each tidbit.tags as tag}
-								<span
-									class="px-2 py-1 text-xs rounded-full bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300"
+								<button
+									class="px-2 py-1 text-xs rounded-full bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300 cursor-pointer hover:bg-pink-200"
 									onclick={() => handleTagSelect(tag)}
 								>
 									#{tag}
-								</span>
+								</button>
 							{/each}
 						</div>
 					</div>
@@ -228,17 +222,110 @@
 			{/each}
 		</div>
 	{/if}
-
-	<!-- Coming soon section -->
-	<div
-		class="mt-12 text-center p-8 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700"
-	>
-		<h2 class="text-2xl font-semibold text-slate-800 dark:text-white mb-4">
-			More Tidbits Coming Soon
-		</h2>
-		<p class="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-			Tatiana is brewing up more thoughts and insights to share with the world. Check back regularly
-			for new content!
-		</p>
-	</div>
 </div>
+
+{#if showModal}
+	<div
+		class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+		onclick={closeModal}
+	>
+		<div
+			class="bg-white dark:bg-slate-800 rounded-lg shadow-2xl w-full max-w-lg"
+			onclick={(e) => e.stopPropagation()}
+		>
+			{#if !isAuthenticated}
+				<div class="p-6">
+					<h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-white">Enter Passcode</h2>
+					<p class="text-slate-600 dark:text-slate-300 mb-4">
+						To add a new tidbit, please enter the passcode.
+					</p>
+					<form onsubmit={handlePasscodeSubmit}>
+						<input
+							type="password"
+							bind:value={enteredPasscode}
+							placeholder="Your passcode..."
+							class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md mb-2"
+							required
+						/>
+						{#if passcodeError}
+							<p class="text-red-500 text-sm mb-4">{passcodeError}</p>
+						{/if}
+						<div class="flex justify-end gap-3">
+							<button
+								type="button"
+								onclick={closeModal}
+								class="px-4 py-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+								>Cancel</button
+							>
+							<button
+								type="submit"
+								class="px-4 py-2 rounded-md bg-pink-500 text-white hover:bg-pink-600">Unlock</button
+							>
+						</div>
+					</form>
+				</div>
+			{:else}
+				<div class="p-6">
+					<h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-white">Add a New Tidbit</h2>
+					<form onsubmit={handleAddTidbit} class="flex flex-col gap-4">
+						<div>
+							<label
+								for="title"
+								class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+								>Title</label
+							>
+							<input
+								id="title"
+								type="text"
+								bind:value={newTidbit.title}
+								class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md"
+								required
+							/>
+						</div>
+						<div>
+							<label
+								for="content"
+								class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+								>Content</label
+							>
+							<textarea
+								id="content"
+								rows="4"
+								bind:value={newTidbit.content}
+								class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md"
+								required
+							></textarea>
+						</div>
+						<div>
+							<label
+								for="tags"
+								class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+								>Tags (comma-separated)</label
+							>
+							<input
+								id="tags"
+								type="text"
+								bind:value={newTidbit.tags}
+								placeholder="e.g. thoughts, svelte, fun"
+								class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md"
+							/>
+						</div>
+						<div class="flex justify-end gap-3 mt-2">
+							<button
+								type="button"
+								onclick={closeModal}
+								class="px-4 py-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+								>Cancel</button
+							>
+							<button
+								type="submit"
+								class="px-4 py-2 rounded-md bg-pink-500 text-white hover:bg-pink-600"
+								>Save Tidbit</button
+							>
+						</div>
+					</form>
+				</div>
+			{/if}
+		</div>
+	</div>
+{/if}
