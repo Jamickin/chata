@@ -72,7 +72,7 @@
 <div class="relative z-50" bind:this={bellRef}>
 	<button
 		class="fixed top-4 right-4 md:right-8 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-slate-800 shadow-md border border-slate-200 dark:border-slate-700 transition-all hover:bg-slate-50 dark:hover:bg-slate-700"
-		on:click={toggleNotifications}
+		onclick={toggleNotifications}
 		aria-label="Notifications"
 	>
 		<!-- Bell Icon -->
@@ -112,7 +112,7 @@
 				{#if unreadCount > 0}
 					<button
 						class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-						on:click={markAllAsRead}
+						onclick={markAllAsRead}
 					>
 						Mark all as read
 					</button>
@@ -139,7 +139,7 @@
 									{#if !notification.read}
 										<button
 											class="text-blue-600 dark:text-blue-400 p-1"
-											on:click={() => markAsRead(notification.id)}
+											onclick={() => markAsRead(notification.id)}
 											aria-label="Mark as read"
 										>
 											<svg
@@ -159,7 +159,7 @@
 									{/if}
 									<button
 										class="text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400 p-1"
-										on:click={() => removeNotification(notification.id)}
+										onclick={() => removeNotification(notification.id)}
 										aria-label="Remove notification"
 									>
 										<svg

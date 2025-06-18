@@ -6,14 +6,9 @@
 }
 
 body {
-	@apply text-slate-600 bg-slate-50 transition-colors duration-200;
+	@apply text-slate-50 bg-slate-800 transition-colors duration-200;
 	font-family: 'Lexend', sans-serif;
 	font-optical-sizing: auto;
-}
-
-/* Dark mode overrides */
-.dark body {
-	@apply text-slate-50 bg-slate-800;
 }
 
 /* Typography */

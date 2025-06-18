@@ -2,7 +2,7 @@
 	import '../app.css';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import Topbar from '$lib/components/Topbar.svelte';
-	import DarkModeToggle from '$lib/components/DarkModeToggle.svelte';
+	// import DarkModeToggle from '$lib/components/DarkModeToggle.svelte';
 	import NotificationBell from '$lib/components/NotificationBell.svelte';
 	import { onMount } from 'svelte';
 
@@ -45,7 +45,7 @@
 {/if}
 
 <!-- Main content with smooth fade-in animation -->
-<main class="max-w-7xl mx-auto px-4 pt-42 pb-20 animate-fade-in">
+<main class="max-w-7xl mx-auto px-4 md:pt-36 pt-12 pb-20 animate-fade-in">
 	{@render children()}
 </main>
 <!-- 
