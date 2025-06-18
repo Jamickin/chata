@@ -139,11 +139,8 @@
 	}
 </script>
 
-<div
-	bind:this={containerRef}
-	class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6"
->
-	<h3 class="text-xl font-semibold text-slate-800 dark:text-white mb-6 text-center">
+<div bind:this={containerRef} class="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+	<h3 class="text-xl font-semibold text-white mb-6 text-center">
 		<slot name="title">Community Stats</slot>
 	</h3>
 
@@ -155,28 +152,26 @@
 	{:else}
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 			{#each stats as stat, i}
-				<div
-					class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 text-center relative overflow-hidden group"
-				>
+				<div class="bg-slate-700/50 rounded-lg p-4 text-center relative overflow-hidden group">
 					<!-- Decorative background circle -->
 					<div
-						class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-600/30 group-hover:scale-110 transition-transform duration-500"
+						class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-slate-600/30 group-hover:scale-110 transition-transform duration-500"
 					></div>
 
 					<!-- Icon -->
 					<div
-						class="relative z-10 inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 mb-3 mx-auto group-hover:scale-110 transition-transform duration-300"
+						class="relative z-10 inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-600 text-slate-300 mb-3 mx-auto group-hover:scale-110 transition-transform duration-300"
 					>
 						{@html icons[stat.icon] || ''}
 					</div>
 
 					<!-- Value with animation -->
-					<h4 class="text-2xl font-bold text-slate-800 dark:text-white mb-1 relative z-10">
+					<h4 class="text-2xl font-bold text-white mb-1 relative z-10">
 						{formatNumber(animatedValues[i])}
 					</h4>
 
 					<!-- Label -->
-					<p class="text-slate-600 dark:text-slate-300 font-medium relative z-10">{stat.label}</p>
+					<p class="text-slate-300 font-medium relative z-10">{stat.label}</p>
 				</div>
 			{/each}
 		</div>

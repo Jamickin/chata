@@ -127,11 +127,11 @@
 <div class="message-container">
 	<div class="flex flex-wrap items-center gap-2 mb-4">
 		<h3 class="mb-0">Messages</h3>
-		<button class="toggle-button w-auto" on:click={() => (showMessages = !showMessages)}>
+		<button class="toggle-button w-auto" onclick={() => (showMessages = !showMessages)}>
 			{!showMessages ? 'Show Messages' : 'Hide Messages'}
 		</button>
 
-		<button class="good-button w-auto ml-auto" on:click={() => (showSubmit = !showSubmit)}>
+		<button class="good-button w-auto ml-auto" onclick={() => (showSubmit = !showSubmit)}>
 			{!showSubmit ? 'Post Message' : 'Cancel'}
 		</button>
 	</div>
@@ -139,7 +139,7 @@
 	{#if showSubmit}
 		<section>
 			<h3>Post a New Message</h3>
-			<form class="grid grid-cols-1 md:grid-cols-2 gap-4" on:submit={handleSubmit}>
+			<form class="grid grid-cols-1 md:grid-cols-2 gap-4" onsubmit={handleSubmit}>
 				<div class="form-control md:col-span-1">
 					<label for="name" class="block mb-1 font-medium">Your Name</label>
 					<input id="name" type="text" placeholder="Your Name" bind:value={name} required />
@@ -161,7 +161,7 @@
 						required
 						maxlength="255"
 						class="min-h-24"
-						on:keydown={(e) => {
+						onkeydown={(e) => {
 							if (e.key === 'Enter' && !e.shiftKey && e.ctrlKey) {
 								e.preventDefault();
 								handleSubmit();
@@ -174,16 +174,14 @@
 				<div class="form-control md:col-span-2">
 					<div class="grid grid-cols-2 gap-2">
 						<button type="submit" class="good-button">Post Message</button>
-						<button type="button" class="care-button" on:click={() => (showSubmit = false)}
+						<button type="button" class="care-button" onclick={() => (showSubmit = false)}
 							>Cancel</button
 						>
 					</div>
 				</div>
 
 				<div class="md:col-span-2">
-					<div
-						class="bg-white dark:bg-slate-700 p-3 rounded-md border border-slate-300 dark:border-slate-600"
-					>
+					<div class="bg-slate-700 p-3 rounded-md border border-slate-600">
 						<h4 class="font-medium">Preview:</h4>
 						<div class="message-preview mt-2">
 							<strong>{name || 'Your Name'}</strong>
@@ -196,7 +194,7 @@
 	{/if}
 
 	<div class="mt-4 flex items-center gap-2">
-		<button class="toggle-button w-auto" on:click={() => (showLegend = !showLegend)}>
+		<button class="toggle-button w-auto" onclick={() => (showLegend = !showLegend)}>
 			{!showLegend ? 'Show Legend' : 'Hide Legend'}
 		</button>
 	</div>
@@ -227,8 +225,8 @@
 										class="min-h-24"
 									></textarea>
 									<div class="button-group mt-2">
-										<button class="good-button" on:click={saveEdit}>Save</button>
-										<button class="care-button" on:click={cancelEdit}>Cancel</button>
+										<button class="good-button" onclick={saveEdit}>Save</button>
+										<button class="care-button" onclick={cancelEdit}>Cancel</button>
 									</div>
 								</div>
 							{:else}
@@ -239,12 +237,12 @@
 									</div>
 									<p class="mb-3">{message.message}</p>
 									<div class="flex justify-end gap-2">
-										<button class="good-button w-auto" on:click={() => startEditing(message)}>
+										<button class="good-button w-auto" onclick={() => startEditing(message)}>
 											Edit
 										</button>
 										<button
 											class="care-button w-auto"
-											on:click={() => deletePost(message.id, message.passcode)}
+											onclick={() => deletePost(message.id, message.passcode)}
 										>
 											Delete
 											{#if message.passcode}

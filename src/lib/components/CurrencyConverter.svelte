@@ -93,15 +93,15 @@
 			</div>
 
 			<div class="form-control button-group">
-				<button class="good-button" on:click={convert} disabled={loading}> Convert </button>
-				<button class="toggle-button" disabled={loading} on:click={updateRates}>
+				<button class="good-button" onclick={convert} disabled={loading}> Convert </button>
+				<button class="toggle-button" disabled={loading} onclick={updateRates}>
 					{loading ? 'Loading...' : 'Refresh Rates'}
 				</button>
 			</div>
 		</div>
 
 		{#if $result}
-			<div class="result-card mt-4 p-4 border rounded-md bg-white dark:bg-slate-700 text-center">
+			<div class="result-card mt-4 p-4 border rounded-md bg-slate-700 text-center">
 				<p class="font-bold text-xl">
 					{$amount.toLocaleString()}
 					{$fromCurrency} = {parseFloat($result).toLocaleString()}

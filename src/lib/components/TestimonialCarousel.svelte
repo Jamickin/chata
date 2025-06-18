@@ -187,21 +187,19 @@
 	}
 </script>
 
-<div
-	class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"
->
+<div class="bg-slate-800 rounded-xl shadow-sm border border-slate-700 overflow-hidden">
 	{#if loading}
 		<!-- Loading state -->
 		<div class="p-8 text-center">
 			<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div>
-			<p class="mt-4 text-slate-500 dark:text-slate-400">Loading testimonials...</p>
+			<p class="mt-4 text-slate-400">Loading testimonials...</p>
 		</div>
 	{:else if testimonials.length === 0}
 		<!-- No testimonials yet -->
 		<div class="p-8 text-center">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				class="mx-auto h-16 w-16 text-slate-300 dark:text-slate-600 mb-4"
+				class="mx-auto h-16 w-16 text-slate-600 mb-4"
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"
@@ -214,10 +212,8 @@
 				/>
 			</svg>
 
-			<h3 class="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
-				No Testimonials Yet
-			</h3>
-			<p class="text-slate-500 dark:text-slate-400 mb-6 max-w-md mx-auto">
+			<h3 class="text-xl font-semibold text-slate-300 mb-2">No Testimonials Yet</h3>
+			<p class="text-slate-400 mb-6 max-w-md mx-auto">
 				Be the first to share your experience with our community! Your feedback helps others and
 				improves our services.
 			</p>
@@ -225,7 +221,7 @@
 			<div class="flex justify-center">
 				<button
 					class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all"
-					on:click={openAddForm}
+					onclick={openAddForm}
 				>
 					Add Your Testimonial
 				</button>
@@ -244,8 +240,8 @@
 								currentIndex) *
 								100}%);"
 						>
-							<div class="text-slate-400 dark:text-slate-500 mb-4 text-2xl">"</div>
-							<p class="text-lg text-slate-700 dark:text-slate-300 italic mb-6">
+							<div class="text-slate-500 mb-4 text-2xl">"</div>
+							<p class="text-lg text-slate-300 italic mb-6">
 								{testimonial.quote}
 							</p>
 
@@ -256,7 +252,7 @@
 										xmlns="http://www.w3.org/2000/svg"
 										class="h-5 w-5 {starIndex < testimonial.rating
 											? 'text-yellow-400'
-											: 'text-slate-300 dark:text-slate-600'}"
+											: 'text-slate-600'}"
 										viewBox="0 0 20 20"
 										fill="currentColor"
 									>
@@ -268,11 +264,11 @@
 							</div>
 
 							<div class="mt-auto">
-								<p class="font-medium text-slate-900 dark:text-white">{testimonial.author}</p>
+								<p class="font-medium text-white">{testimonial.author}</p>
 								{#if testimonial.title}
-									<p class="text-sm text-slate-500 dark:text-slate-400">{testimonial.title}</p>
+									<p class="text-sm text-slate-400">{testimonial.title}</p>
 								{/if}
-								<p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
+								<p class="text-xs text-slate-500 mt-1">
 									{testimonial.formattedDate}
 								</p>
 							</div>
@@ -284,8 +280,8 @@
 				{#if testimonials.length > 1}
 					<div class="flex items-center justify-between mt-4 px-4">
 						<button
-							class="p-2 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-							on:click={prevSlide}
+							class="p-2 rounded-full bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
+							onclick={prevSlide}
 							aria-label="Previous testimonial"
 						>
 							<svg
@@ -307,9 +303,9 @@
 							{#each testimonials as _, i}
 								<button
 									class="w-2 h-2 rounded-full transition-all {i === currentIndex
-										? 'bg-slate-800 dark:bg-white w-4'
-										: 'bg-slate-300 dark:bg-slate-600'}"
-									on:click={() => setSlide(i)}
+										? 'bg-white w-4'
+										: 'bg-slate-600'}"
+									onclick={() => setSlide(i)}
 									aria-label={`Go to testimonial ${i + 1}`}
 								>
 								</button>
@@ -318,8 +314,8 @@
 
 						<div class="flex items-center">
 							<button
-								class="p-2 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-								on:click={nextSlide}
+								class="p-2 rounded-full bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
+								onclick={nextSlide}
 								aria-label="Next testimonial"
 							>
 								<svg
@@ -338,8 +334,8 @@
 							</button>
 
 							<button
-								class="p-2 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors ml-2"
-								on:click={togglePause}
+								class="p-2 rounded-full bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors ml-2"
+								onclick={togglePause}
 								aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
 							>
 								{#if isPaused}
@@ -380,8 +376,8 @@
 				<!-- Add testimonial button -->
 				<div class="flex justify-center mt-6 mb-2">
 					<button
-						class="px-4 py-2 bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-800/30 transition-colors"
-						on:click={openAddForm}
+						class="px-4 py-2 bg-indigo-900/30 text-indigo-300 rounded-lg hover:bg-indigo-800/30 transition-colors"
+						onclick={openAddForm}
 					>
 						Add Your Testimonial
 					</button>
@@ -392,9 +388,7 @@
 
 	<!-- Success message (if any) -->
 	{#if success}
-		<div
-			class="p-4 bg-green-50 dark:bg-green-900/20 border-t border-green-100 dark:border-green-900/30"
-		>
+		<div class="p-4 bg-green-900/20 border-t border-green-900/30">
 			<div class="flex items-start">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -408,7 +402,7 @@
 						clip-rule="evenodd"
 					/>
 				</svg>
-				<p class="text-green-700 dark:text-green-300">{success}</p>
+				<p class="text-green-300">{success}</p>
 			</div>
 		</div>
 	{/if}
@@ -422,15 +416,13 @@
 
 		<!-- Scrollable container for the form -->
 		<div class="flex-1 overflow-y-auto p-4">
-			<div
-				class="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full mx-auto my-4 overflow-hidden"
-			>
+			<div class="bg-slate-800 rounded-xl shadow-xl max-w-lg w-full mx-auto my-4 overflow-hidden">
 				<div class="bg-gradient-to-r from-indigo-500 to-purple-600 py-3 px-4 sticky top-0 z-10">
 					<div class="flex justify-between items-center">
 						<h3 class="text-lg font-semibold text-white">Share Your Experience</h3>
 						<button
 							class="text-white/80 hover:text-white"
-							on:click={() => {
+							onclick={() => {
 								showAddForm = false;
 								error = '';
 							}}
@@ -451,28 +443,23 @@
 					</div>
 				</div>
 
-				<form class="p-6" on:submit={submitTestimonial}>
+				<form class="p-6" onsubmit={submitTestimonial}>
 					<!-- Error message (if any) -->
 					{#if error}
-						<div
-							class="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30 rounded-md"
-						>
-							<p class="text-red-700 dark:text-red-300 text-sm">{error}</p>
+						<div class="mb-4 p-3 bg-red-900/20 border border-red-900/30 rounded-md">
+							<p class="text-red-300 text-sm">{error}</p>
 						</div>
 					{/if}
 
 					<div class="mb-4">
-						<label
-							for="author"
-							class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-						>
+						<label for="author" class="block text-sm font-medium text-slate-300 mb-1">
 							Your Name*
 						</label>
 						<input
 							id="author"
 							type="text"
 							placeholder="Enter your name"
-							class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md"
+							class="w-full px-3 py-2 border border-slate-600 rounded-md"
 							bind:value={newTestimonial.author}
 							required
 							disabled={submitting}
@@ -480,34 +467,28 @@
 					</div>
 
 					<div class="mb-4">
-						<label
-							for="title"
-							class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-						>
+						<label for="title" class="block text-sm font-medium text-slate-300 mb-1">
 							Your Title/Role
 						</label>
 						<input
 							id="title"
 							type="text"
 							placeholder="e.g. Community Member, User"
-							class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md"
+							class="w-full px-3 py-2 border border-slate-600 rounded-md"
 							bind:value={newTestimonial.title}
 							disabled={submitting}
 						/>
 					</div>
 
 					<div class="mb-4">
-						<label
-							for="quote"
-							class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-						>
+						<label for="quote" class="block text-sm font-medium text-slate-300 mb-1">
 							Your Testimonial*
 						</label>
 						<textarea
 							id="quote"
 							rows="4"
 							placeholder="Share your experience with our platform..."
-							class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md"
+							class="w-full px-3 py-2 border border-slate-600 rounded-md"
 							bind:value={newTestimonial.quote}
 							required
 							disabled={submitting}
@@ -515,15 +496,13 @@
 					</div>
 
 					<div class="mb-6">
-						<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-							Rating
-						</label>
+						<label class="block text-sm font-medium text-slate-300 mb-1"> Rating </label>
 						<div class="flex items-center">
 							{#each Array(5) as _, i}
 								<button
 									type="button"
 									class="p-1 focus:outline-none"
-									on:click={() => setRating(i + 1)}
+									onclick={() => setRating(i + 1)}
 									disabled={submitting}
 									aria-label={`Rate ${i + 1} star${i !== 0 ? 's' : ''}`}
 								>
@@ -531,7 +510,7 @@
 										xmlns="http://www.w3.org/2000/svg"
 										class="h-6 w-6 {i < newTestimonial.rating
 											? 'text-yellow-400'
-											: 'text-slate-300 dark:text-slate-600'}"
+											: 'text-slate-600'}"
 										viewBox="0 0 20 20"
 										fill="currentColor"
 									>
@@ -548,8 +527,8 @@
 					<div class="flex justify-end gap-2">
 						<button
 							type="button"
-							class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-md text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
-							on:click={() => {
+							class="px-4 py-2 border border-slate-600 rounded-md text-slate-300 hover:bg-slate-700"
+							onclick={() => {
 								showAddForm = false;
 								error = '';
 							}}
@@ -590,8 +569,8 @@
 						</button>
 					</div>
 
-					<div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-						<p class="text-xs text-slate-500 dark:text-slate-400">
+					<div class="mt-4 pt-4 border-t border-slate-700">
+						<p class="text-xs text-slate-400">
 							Your testimonial will be reviewed before being published. Thank you for your feedback!
 						</p>
 					</div>

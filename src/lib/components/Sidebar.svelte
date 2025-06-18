@@ -7,7 +7,7 @@
 	}
 </script>
 
-<button class="side-button" aria-label="Toggle menu" on:click={toggleSidebar}>
+<button class="side-button" aria-label="Toggle menu" onclick={toggleSidebar}>
 	{openSidebar ? 'X' : '☰'}
 </button>
 
@@ -16,7 +16,7 @@
 		<h3 class="text-2xl mb-4">Chadz</h3>
 		<nav class="flex flex-col w-full gap-3">
 			{#each routes as route}
-				<a href={route.path} on:click={toggleSidebar}>
+				<a href={route.path} onclick={toggleSidebar}>
 					{route.name}
 				</a>
 			{/each}
@@ -28,7 +28,7 @@
 {#if openSidebar}
 	<div
 		class="fixed inset-0 bg-black/30 backdrop-blur-sm z-30 md:hidden"
-		on:click={toggleSidebar}
+		onclick={toggleSidebar}
 		aria-hidden="true"
 	></div>
 {/if}
