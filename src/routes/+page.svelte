@@ -13,7 +13,7 @@
 <AnimatedBackground variant="particles" opacity={0.1} colorScheme="blue" />
 
 <!-- Dark Mode Toggle -->
-<DarkModeToggle />
+<!-- <DarkModeToggle /> -->
 
 <!-- Notification Bell -->
 <NotificationBell />

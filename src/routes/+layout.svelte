@@ -37,7 +37,7 @@
 <Topbar />
 
 <!-- Always include DarkModeToggle on all pages for consistent behavior -->
-<DarkModeToggle />
+<!-- <DarkModeToggle /> -->
 
 <!-- Notification Bell - Only visible on non-home pages -->
 {#if pageLoaded && currentPath !== '/'}
@@ -48,9 +48,9 @@
 <main class="max-w-7xl mx-auto px-4 pt-42 pb-20 animate-fade-in">
 	{@render children()}
 </main>
-
+<!-- 
 <footer class="footer">
 	<div class="max-w-7xl mx-auto px-4">
 		<p>"This is the start of something brand new and exciting" JW, 2025</p>
 	</div>
-</footer>
+</footer> -->
