@@ -5,7 +5,7 @@
 	import FeatureCard from '$lib/components/FeatureCard.svelte';
 	import StatsDisplay from '$lib/components/StatsDisplay.svelte';
 	import TestimonialCarousel from '$lib/components/TestimonialCarousel.svelte';
-	import DarkModeToggle from '$lib/components/DarkModeToggle.svelte';
+	// import DarkModeToggle from '$lib/components/DarkModeToggle.svelte';
 	import NotificationBell from '$lib/components/NotificationBell.svelte';
 </script>
 

@@ -101,7 +101,7 @@
 								: project.color === 'blue'
 									? 'from-blue-500 to-cyan-600'
 									: 'from-indigo-500 to-purple-600'} text-white rounded-md shadow-sm hover:shadow-md transition-all"
-							on:click={() => toggleComponent(project.id)}
+							onclick={() => toggleComponent(project.id)}
 						>
 							{activeComponent === project.id ? 'Hide' : 'Show'}
 							{project.title}
@@ -133,7 +133,7 @@
 					</h2>
 					<button
 						class="p-1 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
-						on:click={() => toggleComponent(activeComponent)}
+						onclick={() => toggleComponent(activeComponent)}
 						aria-label="Close"
 					>
 						<svg
