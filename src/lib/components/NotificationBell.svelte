@@ -69,9 +69,9 @@
 	});
 </script>
 
-<div class="relative z-50" bind:this={bellRef}>
+<div class="relative" bind:this={bellRef}>
 	<button
-		class="fixed top-4 right-4 md:right-8 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-slate-800 shadow-md border border-slate-700 transition-all hover:bg-slate-700"
+		class="fixed top-4 right-4 md:right-8 flex items-center justify-center w-10 h-10 rounded-full bg-slate-800 shadow-md border border-slate-700 transition-all hover:bg-slate-700"
 		onclick={toggleNotifications}
 		aria-label="Notifications"
 	>
