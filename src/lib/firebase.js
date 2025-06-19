@@ -1,6 +1,7 @@
 // src/firebase.js
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth'; // Correct import for getAuth
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyBN3xiXITzSBUCgZ85TEM9kU_E5-sqMn88',
@@ -16,5 +17,11 @@ const app = initializeApp(firebaseConfig);
 
 // Export Firebase services
 export const db = getFirestore(app);
+export const auth = getAuth(app);
+
 export const messagesCollection = collection(db, 'messages');
 export const todosCollection = collection(db, 'todos');
+
+const STATIC_APP_ID = 'chata-d12ca';
+
+export const tidbitsCollection = collection(db, `artifacts/${STATIC_APP_ID}/public/data/tidbits`);

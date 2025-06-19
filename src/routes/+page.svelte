@@ -5,15 +5,11 @@
 	import FeatureCard from '$lib/components/FeatureCard.svelte';
 	import StatsDisplay from '$lib/components/StatsDisplay.svelte';
 	import TestimonialCarousel from '$lib/components/TestimonialCarousel.svelte';
-	// import DarkModeToggle from '$lib/components/DarkModeToggle.svelte';
 	import NotificationBell from '$lib/components/NotificationBell.svelte';
 </script>
 
 <!-- Background animation -->
 <AnimatedBackground variant="particles" opacity={0.1} colorScheme="blue" />
-
-<!-- Dark Mode Toggle -->
-<!-- <DarkModeToggle /> -->
 
 <!-- Notification Bell -->
 <NotificationBell />
@@ -29,9 +25,7 @@
 <div class="max-w-6xl mx-auto px-4 py-8">
 	<!-- Feature Cards -->
 	<section class="mb-16">
-		<h2 class="text-3xl font-bold text-center mb-10 text-slate-800 dark:text-white">
-			Our Features
-		</h2>
+		<h2 class="text-3xl font-bold text-center mb-10 text-white">Our Features</h2>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 			<!-- Tatiana's Tidbits -->
@@ -42,10 +36,7 @@
 				color="pink"
 			>
 				<div class="mt-4">
-					<a
-						href="/tati"
-						class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
-					>
+					<a href="/tati" class="text-sm font-medium text-blue-400 hover:underline">
 						Visit Tatiana's Page →
 					</a>
 				</div>
@@ -59,10 +50,7 @@
 				color="purple"
 			>
 				<div class="mt-4">
-					<a
-						href="/toni"
-						class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
-					>
+					<a href="/toni" class="text-sm font-medium text-blue-400 hover:underline">
 						Visit Toni's Timeline →
 					</a>
 				</div>
@@ -76,10 +64,7 @@
 				color="green"
 			>
 				<div class="mt-4">
-					<a
-						href="/miscpro"
-						class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
-					>
+					<a href="/miscpro" class="text-sm font-medium text-blue-400 hover:underline">
 						Open Todo List →
 					</a>
 				</div>
@@ -93,10 +78,7 @@
 				color="blue"
 			>
 				<div class="mt-4">
-					<a
-						href="/miscpro"
-						class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
-					>
+					<a href="/miscpro" class="text-sm font-medium text-blue-400 hover:underline">
 						Open Converter →
 					</a>
 				</div>
@@ -110,10 +92,7 @@
 				color="indigo"
 			>
 				<div class="mt-4">
-					<a
-						href="/toni"
-						class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
-					>
+					<a href="/toni" class="text-sm font-medium text-blue-400 hover:underline">
 						View Messages →
 					</a>
 				</div>
@@ -127,9 +106,9 @@
 				color="red"
 			>
 				<div class="mt-4">
-					<p class="text-sm text-slate-600 dark:text-slate-400">
-						Look for the <span class="font-mono bg-slate-200 dark:bg-slate-700 px-1 rounded">#</span
-						> symbol for protected items
+					<p class="text-sm text-slate-400">
+						Look for the <span class="font-mono bg-slate-700 px-1 rounded">#</span> symbol for protected
+						items
 					</p>
 				</div>
 			</FeatureCard>
@@ -142,18 +121,16 @@
 			<svelte:fragment slot="title">Live Community Stats</svelte:fragment>
 		</StatsDisplay>
 
-		<div class="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
+		<div class="mt-4 text-center text-sm text-slate-400">
 			<p>These statistics are pulled directly from our database in real-time</p>
 		</div>
 	</section>
 
 	<!-- Testimonials Section -->
 	<section class="mb-16">
-		<h2 class="text-3xl font-bold text-center mb-10 text-slate-800 dark:text-white">
-			Community Feedback
-		</h2>
+		<h2 class="text-3xl font-bold text-center mb-10 text-white">Community Feedback</h2>
 		<TestimonialCarousel />
-		<div class="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
+		<div class="mt-4 text-center text-sm text-slate-400">
 			<p>
 				Share your experience with our platform and help us improve! Your testimonial will be
 				displayed here after review.
@@ -191,13 +168,13 @@
 		{#each routes.filter((route) => route.path !== '/') as route}
 			<a
 				href={route.path}
-				class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all flex flex-col items-center justify-center text-center group"
+				class="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700 hover:shadow-md transition-all flex flex-col items-center justify-center text-center group"
 			>
 				<span
-					class="text-lg font-medium text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+					class="text-lg font-medium text-white group-hover:group-hover:text-blue-400 transition-colors"
 					>{route.name}</span
 				>
-				<span class="text-sm text-slate-500 dark:text-slate-400 mt-2">Explore →</span>
+				<span class="text-sm text-slate-400 mt-2">Explore →</span>
 			</a>
 		{/each}
 	</section>

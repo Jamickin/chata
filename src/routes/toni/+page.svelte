@@ -247,10 +247,7 @@
 		<form class="p-6" onsubmit={handleSubmit}>
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 				<div>
-					<label
-						for="name"
-						class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-					>
+					<label for="name" class="block text-sm font-medium text-slate-300 mb-1">
 						Your Name*
 					</label>
 					<input
@@ -264,10 +261,7 @@
 				</div>
 
 				<div>
-					<label
-						for="passcode"
-						class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-					>
+					<label for="passcode" class="block text-sm font-medium text-slate-300 mb-1">
 						Passcode <span class="text-xs text-slate-500">(for editing/deleting later)</span>
 					</label>
 					<input
@@ -281,10 +275,7 @@
 			</div>
 
 			<div class="mb-4">
-				<label
-					for="message"
-					class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-				>
+				<label for="message" class="block text-sm font-medium text-slate-300 mb-1">
 					Your Message*
 				</label>
 				<textarea
@@ -308,7 +299,7 @@
 				<div class="flex gap-3">
 					<button
 						type="button"
-						class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-md text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+						class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-md text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
 						onclick={() => (showSubmitForm = false)}
 					>
 						Cancel
@@ -328,7 +319,7 @@
 			<div
 				class="p-4 bg-slate-50 dark:bg-slate-700/30 border-t border-slate-200 dark:border-slate-700"
 			>
-				<h3 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Preview:</h3>
+				<h3 class="text-sm font-medium text-slate-300 mb-2">Preview:</h3>
 				<div
 					class="bg-white dark:bg-slate-800 p-4 rounded-md border border-slate-200 dark:border-slate-700"
 				>
@@ -369,10 +360,7 @@
 	>
 		<div class="flex flex-col md:flex-row gap-4">
 			<div class="flex-1">
-				<label
-					for="search"
-					class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-				>
+				<label for="search" class="block text-sm font-medium text-slate-300 mb-1">
 					Search Messages
 				</label>
 				<input
@@ -385,10 +373,7 @@
 			</div>
 
 			<div class="md:w-1/3">
-				<label
-					for="filter"
-					class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-				>
+				<label for="filter" class="block text-sm font-medium text-slate-300 mb-1">
 					Filter Messages
 				</label>
 				<div class="relative">
@@ -402,7 +387,7 @@
 						<option value="public">Public Only</option>
 					</select>
 					<div
-						class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-700 dark:text-slate-300"
+						class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-300"
 					>
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
@@ -420,9 +405,7 @@
 		<!-- Quick filters -->
 		{#if authors.length > 0}
 			<div class="mt-3">
-				<h3 class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-					Filter by Author
-				</h3>
+				<h3 class="block text-sm font-medium text-slate-300 mb-1">Filter by Author</h3>
 				<div class="flex flex-wrap gap-2">
 					<button
 						class="px-3 py-1 text-sm rounded-full transition-colors bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800/30"
@@ -476,7 +459,7 @@
 					d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
 				/>
 			</svg>
-			<h3 class="mt-4 text-lg font-medium text-slate-700 dark:text-slate-300">No messages found</h3>
+			<h3 class="mt-4 text-lg font-medium text-slate-300">No messages found</h3>
 			<p class="mt-2 text-slate-500 dark:text-slate-400">
 				Be the first to post or try different search criteria
 			</p>
@@ -525,10 +508,7 @@
 						<!-- Edit mode -->
 						{#if editingPost && editingPost.id === msg.id}
 							<div class="mb-3">
-								<label
-									for="edit-message"
-									class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
-								>
+								<label for="edit-message" class="block text-sm font-medium text-slate-300 mb-1">
 									Edit Message
 								</label>
 								<textarea
@@ -541,7 +521,7 @@
 
 							<div class="flex justify-end gap-2">
 								<button
-									class="px-3 py-1 text-sm border border-slate-300 dark:border-slate-600 rounded-md text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+									class="px-3 py-1 text-sm border border-slate-300 dark:border-slate-600 rounded-md text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
 									onclick={cancelEdit}
 								>
 									Cancel

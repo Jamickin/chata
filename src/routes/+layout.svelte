@@ -2,7 +2,6 @@
 	import '../app.css';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import Topbar from '$lib/components/Topbar.svelte';
-	// import DarkModeToggle from '$lib/components/DarkModeToggle.svelte';
 	import NotificationBell from '$lib/components/NotificationBell.svelte';
 	import { onMount } from 'svelte';
 
@@ -35,9 +34,6 @@
 
 <!-- Always show the topbar (it hides the nav on mobile) -->
 <Topbar />
-
-<!-- Always include DarkModeToggle on all pages for consistent behavior -->
-<!-- <DarkModeToggle /> -->
 
 <!-- Notification Bell - Only visible on non-home pages -->
 {#if pageLoaded && currentPath !== '/'}
