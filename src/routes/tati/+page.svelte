@@ -14,6 +14,8 @@
 
 	import { db as firestoreDb, auth as firebaseAuth, tidbitsCollection } from '$lib/firebase';
 
+	const CORRECT_PASSCODE = 's3cretTidbitP@ss';
+
 	let userId = $state(null);
 	let isFirebaseReady = $state(false);
 
@@ -26,6 +28,8 @@
 
 	let showAddModal = $state(false);
 	let newTidbit = $state({ title: '', content: '', tags: '' });
+	let enteredPasscode = $state('');
+	let passcodeError = $state('');
 
 	let showEditModal = $state(false);
 	let tidbitToEdit = $state(null);
@@ -136,9 +140,18 @@
 		selectedTag = tag;
 	}
 
+	// Function to handle keyboard events for closing modals
+	function handleModalOverlayKeydown(event) {
+		if (event.key === 'Escape' || event.key === 'Enter' || event.key === ' ') {
+			closeAllModals();
+		}
+	}
+
 	function openAddModal() {
 		showAddModal = true;
 		newTidbit = { title: '', content: '', tags: '' };
+		enteredPasscode = '';
+		passcodeError = '';
 		showFormMessage = false;
 		formMessage = '';
 	}
@@ -148,6 +161,8 @@
 		showEditModal = false;
 		showDeleteConfirmModal = false;
 		newTidbit = { title: '', content: '', tags: '' };
+		enteredPasscode = '';
+		passcodeError = '';
 		tidbitToEdit = null;
 		tidbitToDelete = null;
 		showFormMessage = false;
@@ -162,6 +177,13 @@
 			formMessageType = 'error';
 			formMessage = 'Please fill out both title and content.';
 			return;
+		}
+
+		if (enteredPasscode !== CORRECT_PASSCODE) {
+			passcodeError = 'Incorrect passcode.';
+			return;
+		} else {
+			passcodeError = '';
 		}
 
 		if (!firestoreDb || !userId) {
@@ -194,6 +216,7 @@
 			formMessageType = 'success';
 			formMessage = 'Tidbit added successfully!';
 			newTidbit = { title: '', content: '', tags: '' };
+			enteredPasscode = '';
 			setTimeout(() => {
 				closeAllModals();
 			}, 1500);
@@ -400,6 +423,10 @@
 		<div
 			class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
 			onclick={closeAllModals}
+			onkeydown={handleModalOverlayKeydown}
+			role="button"
+			tabindex="0"
+			aria-label="Close modal"
 		>
 			<div
 				class="bg-slate-800 rounded-lg shadow-2xl w-full max-w-lg border border-slate-700"
@@ -451,6 +478,21 @@
 								class="w-full px-3 py-2 border border-slate-600 rounded-md bg-slate-700 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
 							/>
 						</div>
+						<div>
+							<label for="passcode" class="block text-sm font-medium text-slate-300 mb-1"
+								>Passcode</label
+							>
+							<input
+								id="passcode"
+								type="password"
+								bind:value={enteredPasscode}
+								class="w-full px-3 py-2 border border-slate-600 rounded-md bg-slate-700 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
+								required
+							/>
+							{#if passcodeError}
+								<p class="text-red-400 text-sm mt-1">{passcodeError}</p>
+							{/if}
+						</div>
 						<div class="flex justify-end gap-3 mt-2">
 							<button
 								type="button"
@@ -474,6 +516,10 @@
 		<div
 			class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
 			onclick={closeAllModals}
+			onkeydown={handleModalOverlayKeydown}
+			role="button"
+			tabindex="0"
+			aria-label="Close modal"
 		>
 			<div
 				class="bg-slate-800 rounded-lg shadow-2xl w-full max-w-lg border border-slate-700"
@@ -551,6 +597,10 @@
 		<div
 			class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
 			onclick={closeAllModals}
+			onkeydown={handleModalOverlayKeydown}
+			role="button"
+			tabindex="0"
+			aria-label="Close modal"
 		>
 			<div
 				class="bg-slate-800 rounded-lg shadow-2xl w-full max-w-sm border border-slate-700"
