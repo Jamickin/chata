@@ -41,7 +41,7 @@
 {/if}
 
 <!-- Main content with smooth fade-in animation -->
-<main class="max-w-7xl mx-auto px-4 md:pt-36 pt-24 pb-20 animate-fade-in">
+<main class="max-w-7xl mx-auto px-4 md:pt-36 pt-28 pb-20 animate-fade-in">
 	{@render children()}
 </main>
 <!-- 
