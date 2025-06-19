@@ -297,6 +297,10 @@ time {
 .z-modal {
 	z-index: 100;
 }
+.z-max-modal {
+	/* ADD THIS NEW LINE */
+	z-index: 9999;
+}
 
 /* Glass effect */
 .glass {

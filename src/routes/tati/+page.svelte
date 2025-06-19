@@ -1,16 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-	import {
-		collection,
-		onSnapshot,
-		query,
-		addDoc,
-		deleteDoc,
-		doc,
-		updateDoc,
-		serverTimestamp
-	} from 'firebase/firestore';
+	import { collection, onSnapshot, query, addDoc, serverTimestamp } from 'firebase/firestore';
 
 	import { db as firestoreDb, auth as firebaseAuth, tidbitsCollection } from '$lib/firebase';
 
@@ -31,18 +22,9 @@
 	let enteredPasscode = $state('');
 	let passcodeError = $state('');
 
-	let showEditModal = $state(false);
-	let tidbitToEdit = $state(null);
-	let editedTitle = $state('');
-	let editedContent = $state('');
-	let editedTags = $state('');
-
-	let showDeleteConfirmModal = $state(false);
-	let tidbitToDelete = $state(null);
-
 	let showFormMessage = $state(false);
-	let formMessage = $state('');
-	let formMessageType = $state('error');
+	let formMessage = '';
+	let formMessageType = 'error';
 
 	onMount(() => {
 		const unsubscribeAuth = onAuthStateChanged(firebaseAuth, async (user) => {
@@ -140,10 +122,21 @@
 		selectedTag = tag;
 	}
 
-	// Function to handle keyboard events for closing modals
+	function portal(node) {
+		document.body.appendChild(node);
+		return {
+			destroy() {
+				// Clean up by removing the node when the component is destroyed
+				if (node.parentNode === document.body) {
+					document.body.removeChild(node);
+				}
+			}
+		};
+	}
+
 	function handleModalOverlayKeydown(event) {
-		if (event.key === 'Escape' || event.key === 'Enter' || event.key === ' ') {
-			closeAllModals();
+		if (event.key === 'Escape') {
+			closeAddModal();
 		}
 	}
 
@@ -156,15 +149,11 @@
 		formMessage = '';
 	}
 
-	function closeAllModals() {
+	function closeAddModal() {
 		showAddModal = false;
-		showEditModal = false;
-		showDeleteConfirmModal = false;
 		newTidbit = { title: '', content: '', tags: '' };
 		enteredPasscode = '';
 		passcodeError = '';
-		tidbitToEdit = null;
-		tidbitToDelete = null;
 		showFormMessage = false;
 		formMessage = '';
 	}
@@ -218,76 +207,13 @@
 			newTidbit = { title: '', content: '', tags: '' };
 			enteredPasscode = '';
 			setTimeout(() => {
-				closeAllModals();
+				closeAddModal();
 			}, 1500);
 		} catch (e) {
 			console.error('Error adding document: ', e);
 			showFormMessage = true;
 			formMessageType = 'error';
 			formMessage = `Failed to add tidbit. Error: ${e.message || 'Unknown error'}`;
-		}
-	}
-
-	function openEditModal(tidbit) {
-		tidbitToEdit = tidbit;
-		editedTitle = tidbit.title;
-		editedContent = tidbit.content;
-		editedTags = tidbit.tags.join(', ');
-		showEditModal = true;
-	}
-
-	async function handleEditSubmit(event) {
-		event.preventDefault();
-		try {
-			if (!editedTitle || !editedContent) {
-				showFormMessage = true;
-				formMessageType = 'error';
-				formMessage = 'Title and content cannot be empty.';
-				return;
-			}
-
-			await updateDoc(doc(firestoreDb, tidbitsCollection.path, tidbitToEdit.id), {
-				title: editedTitle,
-				content: editedContent,
-				tags: editedTags
-					.split(',')
-					.map((tag) => tag.trim())
-					.filter((tag) => tag)
-			});
-			showFormMessage = true;
-			formMessageType = 'success';
-			formMessage = 'Tidbit updated successfully!';
-			setTimeout(() => {
-				closeAllModals();
-			}, 1500);
-		} catch (e) {
-			console.error('Error updating document: ', e);
-			showFormMessage = true;
-			formMessageType = 'error';
-			formMessage = `Failed to update tidbit. Error: ${e.message || 'Unknown error'}`;
-		}
-	}
-
-	function openDeleteConfirmModal(tidbit) {
-		tidbitToDelete = tidbit;
-		showDeleteConfirmModal = true;
-	}
-
-	async function handleDeleteSubmit(event) {
-		event.preventDefault();
-		try {
-			await deleteDoc(doc(firestoreDb, tidbitsCollection.path, tidbitToDelete.id));
-			showFormMessage = true;
-			formMessageType = 'success';
-			formMessage = 'Tidbit deleted successfully!';
-			setTimeout(() => {
-				closeAllModals();
-			}, 1500);
-		} catch (e) {
-			console.error('Error deleting document: ', e);
-			showFormMessage = true;
-			formMessageType = 'error';
-			formMessage = `Failed to delete tidbit. Error: ${e.message || 'Unknown error'}`;
 		}
 	}
 </script>
@@ -397,21 +323,6 @@
 									<span class="text-xs text-slate-500">No tags</span>
 								{/if}
 							</div>
-
-							<div class="flex justify-end gap-2 mt-4">
-								<button
-									class="text-xs px-2 py-1 text-indigo-400 hover:underline"
-									onclick={() => openEditModal(tidbit)}
-								>
-									Edit
-								</button>
-								<button
-									class="text-xs px-2 py-1 text-red-400 hover:underline"
-									onclick={() => openDeleteConfirmModal(tidbit)}
-								>
-									Delete
-								</button>
-							</div>
 						</div>
 					</div>
 				{/each}
@@ -421,18 +332,19 @@
 
 	{#if showAddModal}
 		<div
-			class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-			onclick={closeAllModals}
+			use:portal
+			class="fixed inset-0 bg-black/70 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm"
+			onclick={closeAddModal}
 			onkeydown={handleModalOverlayKeydown}
 			role="button"
 			tabindex="0"
 			aria-label="Close modal"
 		>
 			<div
-				class="bg-slate-800 rounded-lg shadow-2xl w-full max-w-lg border border-slate-700"
+				class="bg-slate-800 z-[9999] rounded-lg shadow-2xl w-full max-w-lg border border-slate-700"
 				onclick={(e) => e.stopPropagation()}
 			>
-				<div class="p-6">
+				<div class="p-6 z-[9999]">
 					<h2 class="text-2xl font-bold mb-4 text-white">Add a New Tidbit</h2>
 					<form onsubmit={handleAddTidbit} class="flex flex-col gap-4">
 						{#if showFormMessage}
@@ -496,7 +408,7 @@
 						<div class="flex justify-end gap-3 mt-2">
 							<button
 								type="button"
-								onclick={closeAllModals}
+								onclick={closeAddModal}
 								class="px-4 py-2 rounded-md text-slate-200 hover:bg-slate-700 transition-colors"
 								>Cancel</button
 							>
@@ -504,135 +416,6 @@
 								type="submit"
 								class="px-4 py-2 rounded-md bg-pink-500 text-white hover:bg-pink-600"
 								>Save Tidbit</button
-							>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	{/if}
-
-	{#if showEditModal}
-		<div
-			class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-			onclick={closeAllModals}
-			onkeydown={handleModalOverlayKeydown}
-			role="button"
-			tabindex="0"
-			aria-label="Close modal"
-		>
-			<div
-				class="bg-slate-800 rounded-lg shadow-2xl w-full max-w-lg border border-slate-700"
-				onclick={(e) => e.stopPropagation()}
-			>
-				<div class="p-6">
-					<h2 class="text-2xl font-bold mb-4 text-white">Edit Tidbit</h2>
-					<p class="text-slate-300 mb-4">Make changes to your tidbit.</p>
-					<form onsubmit={handleEditSubmit} class="flex flex-col gap-4">
-						{#if showFormMessage}
-							<div
-								class="p-3 rounded-md mb-2 {formMessageType === 'error'
-									? 'bg-red-900/30 text-red-400'
-									: 'bg-green-900/30 text-green-400'}"
-							>
-								{formMessage}
-							</div>
-						{/if}
-						<div>
-							<label for="edited-title" class="block text-sm font-medium text-slate-300 mb-1"
-								>Title</label
-							>
-							<input
-								id="edited-title"
-								type="text"
-								bind:value={editedTitle}
-								class="w-full px-3 py-2 border border-slate-600 rounded-md bg-slate-700 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
-								required
-							/>
-						</div>
-						<div>
-							<label for="edited-content" class="block text-sm font-medium text-slate-300 mb-1"
-								>Content</label
-							>
-							<textarea
-								id="edited-content"
-								rows="4"
-								bind:value={editedContent}
-								class="w-full px-3 py-2 border border-slate-600 rounded-md bg-slate-700 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
-								required
-							></textarea>
-						</div>
-						<div>
-							<label for="edited-tags" class="block text-sm font-medium text-slate-300 mb-1"
-								>Tags (comma-separated)</label
-							>
-							<input
-								id="edited-tags"
-								type="text"
-								bind:value={editedTags}
-								placeholder="e.g. thoughts, svelte, fun"
-								class="w-full px-3 py-2 border border-slate-600 rounded-md bg-slate-700 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
-							/>
-						</div>
-						<div class="flex justify-end gap-3 mt-2">
-							<button
-								type="button"
-								onclick={closeAllModals}
-								class="px-4 py-2 rounded-md text-slate-200 hover:bg-slate-700 transition-colors"
-								>Cancel</button
-							>
-							<button
-								type="submit"
-								class="px-4 py-2 rounded-md bg-pink-500 text-white hover:bg-pink-600 transition-colors"
-								>Save Changes</button
-							>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	{/if}
-
-	{#if showDeleteConfirmModal}
-		<div
-			class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-			onclick={closeAllModals}
-			onkeydown={handleModalOverlayKeydown}
-			role="button"
-			tabindex="0"
-			aria-label="Close modal"
-		>
-			<div
-				class="bg-slate-800 rounded-lg shadow-2xl w-full max-w-sm border border-slate-700"
-				onclick={(e) => e.stopPropagation()}
-			>
-				<div class="p-6">
-					<h2 class="text-2xl font-bold mb-4 text-white">Confirm Deletion</h2>
-					<p class="text-slate-300 mb-4">
-						Are you sure you want to delete this tidbit:
-						<span class="font-semibold">{tidbitToDelete?.title}</span>?
-					</p>
-					<form onsubmit={handleDeleteSubmit}>
-						{#if showFormMessage}
-							<div
-								class="p-3 rounded-md mb-2 {formMessageType === 'error'
-									? 'bg-red-900/30 text-red-400'
-									: 'bg-green-900/30 text-green-400'}"
-							>
-								{formMessage}
-							</div>
-						{/if}
-						<div class="flex justify-end gap-3">
-							<button
-								type="button"
-								onclick={closeAllModals}
-								class="px-4 py-2 rounded-md text-slate-200 hover:bg-slate-700 transition-colors"
-								>Cancel</button
-							>
-							<button
-								type="submit"
-								class="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors"
-								>Delete</button
 							>
 						</div>
 					</form>
