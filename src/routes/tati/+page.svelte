@@ -219,7 +219,7 @@
 </script>
 
 <div class="min-h-screen bg-slate-900 text-slate-300 font-inter antialiased">
-	<div class="max-w-4xl mx-auto mb-12 p-4">
+	<div class="max-w-4xl mx-auto mb-2 p-4">
 		<div class="text-center mb-8 relative">
 			<h1
 				class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600"
@@ -243,7 +243,7 @@
 			{/if}
 		</div>
 
-		<div class="mb-8 bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-4">
+		<div class="mb-2 bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-4">
 			<div class="flex flex-col md:flex-row gap-4">
 				<div class="flex-1">
 					<label for="search" class="block text-sm font-medium text-slate-300 mb-1">
