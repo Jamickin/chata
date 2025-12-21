@@ -2,3 +2,10 @@
 	command = "npm run build"
 	publish = "build"
 	functions = "netlify/functions"
+
+# Force HTTPS redirect
+[[redirects]]
+	from = "http://*"
+	to = "https://:splat"
+	status = 301
+	force = true
