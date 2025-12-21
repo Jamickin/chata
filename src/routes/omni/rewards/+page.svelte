@@ -163,8 +163,9 @@
 
 			<div class="space-y-4 mb-6">
 				<div>
-					<label class="block text-sm text-slate-300 mb-2">Name</label>
+					<label for="reward-name" class="block text-sm text-slate-300 mb-2">Name</label>
 					<input
+					id="reward-name"
 						type="text"
 						bind:value={rewardName}
 						class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:outline-none"
@@ -172,8 +173,9 @@
 				</div>
 
 				<div>
-					<label class="block text-sm text-slate-300 mb-2">Description</label>
+					<label for="reward-description" class="block text-sm text-slate-300 mb-2">Description</label>
 					<textarea
+					id="reward-description"
 						bind:value={rewardDescription}
 						class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:outline-none"
 						rows="2"
@@ -182,8 +184,9 @@
 
 				<div class="grid grid-cols-2 gap-4">
 					<div>
-						<label class="block text-sm text-slate-300 mb-2">Points</label>
+						<label for="reward-points" class="block text-sm text-slate-300 mb-2">Points</label>
 						<input
+						id="reward-points"
 							type="number"
 							bind:value={rewardPoints}
 							class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:outline-none"
@@ -191,8 +194,9 @@
 					</div>
 
 					<div>
-						<label class="block text-sm text-slate-300 mb-2">Member</label>
+						<label for="reward-member" class="block text-sm text-slate-300 mb-2">Member</label>
 						<select
+						id="reward-member"
 							bind:value={rewardMember}
 							class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:outline-none"
 						>

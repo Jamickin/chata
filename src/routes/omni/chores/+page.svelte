@@ -286,8 +286,9 @@
 
 			<div class="space-y-4">
 				<div>
-					<label class="block text-sm font-medium text-slate-300 mb-2">Title *</label>
+					<label for="chore-title" class="block text-sm font-medium text-slate-300 mb-2">Title *</label>
 					<input
+					id="chore-title"
 						type="text"
 						bind:value={title}
 						class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
@@ -296,8 +297,9 @@
 				</div>
 
 				<div>
-					<label class="block text-sm font-medium text-slate-300 mb-2">Description</label>
+					<label for="chore-description" class="block text-sm font-medium text-slate-300 mb-2">Description</label>
 					<textarea
+					id="chore-description"
 						bind:value={description}
 						class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
 						placeholder="Enter chore description"
@@ -307,8 +309,9 @@
 
 				<div class="grid grid-cols-2 gap-4">
 					<div>
-						<label class="block text-sm font-medium text-slate-300 mb-2">Assign To</label>
+						<label for="chore-assign" class="block text-sm font-medium text-slate-300 mb-2">Assign To</label>
 						<select
+						id="chore-assign"
 							bind:value={assignedTo}
 							class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
 						>
@@ -320,8 +323,9 @@
 					</div>
 
 					<div>
-						<label class="block text-sm font-medium text-slate-300 mb-2">Due Date</label>
+						<label for="chore-due-date" class="block text-sm font-medium text-slate-300 mb-2">Due Date</label>
 						<input
+						id="chore-due-date"
 							type="date"
 							bind:value={dueDate}
 							class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
@@ -331,8 +335,9 @@
 
 				<div class="grid grid-cols-2 gap-4">
 					<div>
-						<label class="block text-sm font-medium text-slate-300 mb-2">Priority</label>
+						<label for="chore-priority" class="block text-sm font-medium text-slate-300 mb-2">Priority</label>
 						<select
+						id="chore-priority"
 							bind:value={priority}
 							class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
 						>
@@ -343,8 +348,9 @@
 					</div>
 
 					<div>
-						<label class="block text-sm font-medium text-slate-300 mb-2">Status</label>
+						<label for="chore-status" class="block text-sm font-medium text-slate-300 mb-2">Status</label>
 						<select
+						id="chore-status"
 							bind:value={status}
 							class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
 						>

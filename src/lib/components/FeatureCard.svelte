@@ -37,9 +37,10 @@
 </script>
 
 <div
+	role="article"
 	class="relative overflow-hidden bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md"
-	on:mouseenter={() => (hovering = true)}
-	on:mouseleave={() => (hovering = false)}
+	onmouseenter={() => (hovering = true)}
+	onmouseleave={() => (hovering = false)}
 >
 	<!-- Decorative background pattern -->
 	<div class="absolute top-0 right-0 w-32 h-32 opacity-10">

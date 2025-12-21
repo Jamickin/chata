@@ -23,8 +23,8 @@
 	let passcodeError = $state('');
 
 	let showFormMessage = $state(false);
-	let formMessage = '';
-	let formMessageType = 'error';
+	let formMessage = $state('');
+	let formMessageType = $state('error');
 
 	onMount(() => {
 		const unsubscribeAuth = onAuthStateChanged(firebaseAuth, async (user) => {

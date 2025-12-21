@@ -338,8 +338,9 @@
 			<h2 class="text-2xl font-bold text-white mb-6">Create New List</h2>
 
 			<div class="mb-6">
-				<label class="block text-sm font-medium text-slate-300 mb-2">List Name</label>
+				<label for="list-name" class="block text-sm font-medium text-slate-300 mb-2">List Name</label>
 				<input
+				id="list-name"
 					type="text"
 					bind:value={listName}
 					class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
@@ -376,8 +377,9 @@
 
 			<div class="space-y-4 mb-6">
 				<div>
-					<label class="block text-sm font-medium text-slate-300 mb-2">Item Name</label>
+					<label for="item-name" class="block text-sm font-medium text-slate-300 mb-2">Item Name</label>
 					<input
+					id="item-name"
 						type="text"
 						bind:value={itemName}
 						class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
@@ -387,8 +389,9 @@
 
 				<div class="grid grid-cols-2 gap-4">
 					<div>
-						<label class="block text-sm font-medium text-slate-300 mb-2">Quantity</label>
+						<label for="item-quantity" class="block text-sm font-medium text-slate-300 mb-2">Quantity</label>
 						<input
+						id="item-quantity"
 							type="number"
 							bind:value={itemQuantity}
 							min="1"
@@ -397,8 +400,9 @@
 					</div>
 
 					<div>
-						<label class="block text-sm font-medium text-slate-300 mb-2">Category</label>
+						<label for="item-category" class="block text-sm font-medium text-slate-300 mb-2">Category</label>
 						<select
+						id="item-category"
 							bind:value={itemCategory}
 							class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
 						>
