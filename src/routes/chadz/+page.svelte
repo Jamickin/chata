@@ -138,6 +138,26 @@
 		</div>
 	</section>
 
+	<!-- Mode Switcher Banner -->
+	<section class="mb-8">
+		<div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-6 shadow-lg">
+			<div class="flex items-center justify-between">
+				<div>
+					<h3 class="text-xl font-bold text-white mb-1">Need Family Organization?</h3>
+					<p class="text-emerald-100 text-sm">
+						Switch to Omni mode for chores, groceries, rewards, and analytics!
+					</p>
+				</div>
+				<a
+					href="/omni"
+					class="bg-white text-emerald-600 hover:bg-emerald-50 px-6 py-3 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg whitespace-nowrap"
+				>
+					Switch to Omni →
+				</a>
+			</div>
+		</div>
+	</section>
+
 	<!-- Call to Action -->
 	<section class="mb-16 text-center">
 		<div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 shadow-lg">

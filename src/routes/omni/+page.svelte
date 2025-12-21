@@ -29,7 +29,9 @@
 				color="green"
 			>
 				<div class="mt-4">
-					<p class="text-sm text-slate-400">Coming soon: Full chore management system</p>
+					<a href="/omni/chores" class="text-sm font-medium text-emerald-400 hover:underline">
+						Manage Chores →
+					</a>
 				</div>
 			</FeatureCard>
 
@@ -41,7 +43,9 @@
 				color="blue"
 			>
 				<div class="mt-4">
-					<p class="text-sm text-slate-400">Coming soon: Collaborative shopping lists</p>
+					<a href="/omni/groceries" class="text-sm font-medium text-blue-400 hover:underline">
+						View Grocery Lists →
+					</a>
 				</div>
 			</FeatureCard>
 
@@ -53,7 +57,9 @@
 				color="purple"
 			>
 				<div class="mt-4">
-					<p class="text-sm text-slate-400">Coming soon: Reward system</p>
+					<a href="/omni/rewards" class="text-sm font-medium text-purple-400 hover:underline">
+						View Rewards →
+					</a>
 				</div>
 			</FeatureCard>
 
@@ -65,7 +71,9 @@
 				color="indigo"
 			>
 				<div class="mt-4">
-					<p class="text-sm text-slate-400">Coming soon: Family analytics</p>
+					<a href="/omni/analytics" class="text-sm font-medium text-indigo-400 hover:underline">
+						View Analytics →
+					</a>
 				</div>
 			</FeatureCard>
 
@@ -98,17 +106,17 @@
 	<!-- Info Banner -->
 	<section class="mb-16 text-center">
 		<div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-8 shadow-lg">
-			<h2 class="text-3xl font-bold text-white mb-4">Family Tracker Integration</h2>
+			<h2 class="text-3xl font-bold text-white mb-4">Omni Family Tracker</h2>
 			<p class="text-emerald-100 mb-6 max-w-2xl mx-auto">
-				The full family-tracker application is being integrated into this platform. Check back soon
-				for complete chore management, grocery tracking, rewards system, and more!
+				All family tracking features are now live! Manage chores, groceries, rewards, and view
+				analytics all in one place. Everything is saved to the cloud with Firebase.
 			</p>
 			<div class="flex flex-wrap justify-center gap-4">
 				<a
-					href="/"
+					href="/omni/chores"
 					class="bg-white text-emerald-600 hover:bg-emerald-50 px-6 py-3 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg"
 				>
-					← Back to Mode Select
+					Get Started →
 				</a>
 				<a
 					href="/chadz"
@@ -119,12 +127,4 @@
 			</div>
 		</div>
 	</section>
-
-	<!-- Status Note -->
-	<div class="text-center text-slate-400">
-		<p class="text-sm">
-			🚧 This mode is currently under development. Features from the standalone family-tracker
-			project will be integrated here.
-		</p>
-	</div>
 </div>
