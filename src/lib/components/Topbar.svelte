@@ -1,32 +1,13 @@
 <script>
 	import { routes, omniRoutes, chadzRoutes } from '../routes';
-	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
-	let currentPath = $state('/');
-	let currentMode = $state('');
-
-	onMount(() => {
-		currentPath = window.location.pathname;
-		updateMode();
-
-		const handleRouteChange = () => {
-			currentPath = window.location.pathname;
-			updateMode();
-		};
-
-		window.addEventListener('popstate', handleRouteChange);
-		return () => window.removeEventListener('popstate', handleRouteChange);
+	let currentMode = $derived.by(() => {
+		const path = $page.url.pathname;
+		if (path.startsWith('/omni')) return 'omni';
+		if (path.startsWith('/chadz') || path.startsWith('/tati') || path.startsWith('/toni') || path.startsWith('/miscpro')) return 'chadz';
+		return '';
 	});
-
-	function updateMode() {
-		if (currentPath.startsWith('/omni')) {
-			currentMode = 'omni';
-		} else if (currentPath.startsWith('/chadz') || currentPath.startsWith('/tati') || currentPath.startsWith('/toni') || currentPath.startsWith('/miscpro')) {
-			currentMode = 'chadz';
-		} else {
-			currentMode = '';
-		}
-	}
 
 	let displayRoutes = $derived(currentMode === 'omni' ? omniRoutes : currentMode === 'chadz' ? chadzRoutes : routes);
 	let headerTitle = $derived(currentMode === 'omni' ? 'Welcome to Omni' : currentMode === 'chadz' ? 'Welcome To Chadz' : 'Platform');
@@ -52,7 +33,7 @@
 		</div>
 		<nav class="hidden md:flex gap-2 mt-4 flex-wrap">
 			{#each displayRoutes as route}
-				<a href={route.path} class="md:w-auto" class:active={currentPath === route.path}>{route.name}</a>
+				<a href={route.path} class="md:w-auto" class:active={$page.url.pathname === route.path}>{route.name}</a>
 			{/each}
 		</nav>
 	</div>

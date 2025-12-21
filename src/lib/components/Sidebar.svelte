@@ -1,37 +1,19 @@
 <script>
 	import { routes, omniRoutes, chadzRoutes } from '../routes.js';
-	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	let openSidebar = $state(false);
-	let currentPath = $state('/');
-	let currentMode = $state('');
-
-	onMount(() => {
-		currentPath = window.location.pathname;
-		updateMode();
-
-		const handleRouteChange = () => {
-			currentPath = window.location.pathname;
-			updateMode();
-		};
-
-		window.addEventListener('popstate', handleRouteChange);
-		return () => window.removeEventListener('popstate', handleRouteChange);
-	});
-
-	function updateMode() {
-		if (currentPath.startsWith('/omni')) {
-			currentMode = 'omni';
-		} else if (currentPath.startsWith('/chadz') || currentPath.startsWith('/tati') || currentPath.startsWith('/toni') || currentPath.startsWith('/miscpro')) {
-			currentMode = 'chadz';
-		} else {
-			currentMode = '';
-		}
-	}
 
 	function toggleSidebar() {
 		openSidebar = !openSidebar;
 	}
+
+	let currentMode = $derived.by(() => {
+		const path = $page.url.pathname;
+		if (path.startsWith('/omni')) return 'omni';
+		if (path.startsWith('/chadz') || path.startsWith('/tati') || path.startsWith('/toni') || path.startsWith('/miscpro')) return 'chadz';
+		return '';
+	});
 
 	let displayRoutes = $derived(currentMode === 'omni' ? omniRoutes : currentMode === 'chadz' ? chadzRoutes : routes);
 	let modeTitle = $derived(currentMode === 'omni' ? 'Omni' : currentMode === 'chadz' ? 'Chadz' : 'Menu');
@@ -68,7 +50,7 @@
 
 		<nav class="flex flex-col w-full gap-3">
 			{#each displayRoutes as route}
-				<a href={route.path} onclick={toggleSidebar} class:active={currentPath === route.path}>
+				<a href={route.path} onclick={toggleSidebar} class:active={$page.url.pathname === route.path}>
 					{route.name}
 				</a>
 			{/each}
