@@ -21,6 +21,20 @@
 		<h2 class="text-3xl font-bold text-center mb-10 text-white">Family Features</h2>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+			<!-- Family Members -->
+			<FeatureCard
+				title="Family Members"
+				description="Add and manage your household members. Assign chores and track individual progress."
+				icon="settings"
+				color="teal"
+			>
+				<div class="mt-4">
+					<a href="/omni/family" class="text-sm font-medium text-teal-400 hover:underline">
+						Manage Family →
+					</a>
+				</div>
+			</FeatureCard>
+
 			<!-- Chores -->
 			<FeatureCard
 				title="Chores"

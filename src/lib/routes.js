@@ -10,6 +10,7 @@ export const routes = [
 
 export const omniRoutes = [
 	{ name: 'Omni Home', path: '/omni' },
+	{ name: 'Family Members', path: '/omni/family' },
 	{ name: 'Chores', path: '/omni/chores' },
 	{ name: 'Groceries', path: '/omni/groceries' },
 	{ name: 'Rewards', path: '/omni/rewards' },
