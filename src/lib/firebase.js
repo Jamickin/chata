@@ -25,3 +25,12 @@ export const todosCollection = collection(db, 'todos');
 const STATIC_APP_ID = 'chata-d12ca';
 
 export const tidbitsCollection = collection(db, `artifacts/${STATIC_APP_ID}/public/data/tidbits`);
+
+// Omni/Family Tracker Collections
+export const choresCollection = collection(db, 'chores');
+export const groceryListsCollection = collection(db, 'grocery_lists');
+export const groceryItemsCollection = collection(db, 'grocery_items');
+export const rewardsCollection = collection(db, 'rewards');
+export const badgesCollection = collection(db, 'badges');
+export const userBadgesCollection = collection(db, 'user_badges');
+export const familyMembersCollection = collection(db, 'family_members');
