@@ -1,181 +1,167 @@
 <script>
-	import { routes } from '$lib/routes.js';
 	import AnimatedBackground from '$lib/components/AnimatedBackground.svelte';
-	import AnimatedBanner from '$lib/components/AnimatedBanner.svelte';
-	import FeatureCard from '$lib/components/FeatureCard.svelte';
-	import StatsDisplay from '$lib/components/StatsDisplay.svelte';
-	import TestimonialCarousel from '$lib/components/TestimonialCarousel.svelte';
-	import NotificationBell from '$lib/components/NotificationBell.svelte';
 </script>
 
 <!-- Background animation -->
-<AnimatedBackground variant="particles" opacity={0.1} colorScheme="blue" />
+<AnimatedBackground variant="particles" opacity={0.15} colorScheme="purple" />
 
-<!-- Notification Bell -->
-<NotificationBell />
-
-<!-- Hero Section -->
-<AnimatedBanner
-	title="Welcome to Chadz Community"
-	subtitle="Connect, share, and accomplish more together"
-	background="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
-/>
-
-<!-- Main Content -->
-<div class="max-w-6xl mx-auto px-4 py-8">
-	<!-- Feature Cards -->
-	<section class="mb-16">
-		<h2 class="text-3xl font-bold text-center mb-10 text-white">Our Features</h2>
-
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-			<!-- Tatiana's Tidbits -->
-			<FeatureCard
-				title="Tatiana's Tidbits"
-				description="Explore Tatiana's collection of thoughts, ideas, and creative content."
-				icon="message"
-				color="pink"
-			>
-				<div class="mt-4">
-					<a href="/tati" class="text-sm font-medium text-blue-400 hover:underline">
-						Visit Tatiana's Page →
-					</a>
-				</div>
-			</FeatureCard>
-
-			<!-- Toni's Timeline -->
-			<FeatureCard
-				title="Toni's Timeline"
-				description="Join the conversation in Toni's community timeline with password-protected posts."
-				icon="calendar"
-				color="purple"
-			>
-				<div class="mt-4">
-					<a href="/toni" class="text-sm font-medium text-blue-400 hover:underline">
-						Visit Toni's Timeline →
-					</a>
-				</div>
-			</FeatureCard>
-
-			<!-- Todo List -->
-			<FeatureCard
-				title="Todo List"
-				description="Keep track of tasks with our secure, password-protected todo list."
-				icon="todo"
-				color="green"
-			>
-				<div class="mt-4">
-					<a href="/miscpro" class="text-sm font-medium text-blue-400 hover:underline">
-						Open Todo List →
-					</a>
-				</div>
-			</FeatureCard>
-
-			<!-- Currency Converter -->
-			<FeatureCard
-				title="Currency Converter"
-				description="Convert between currencies with real-time exchange rates."
-				icon="currency"
-				color="blue"
-			>
-				<div class="mt-4">
-					<a href="/miscpro" class="text-sm font-medium text-blue-400 hover:underline">
-						Open Converter →
-					</a>
-				</div>
-			</FeatureCard>
-
-			<!-- Message Board -->
-			<FeatureCard
-				title="Message Board"
-				description="Share your thoughts and connect with other community members."
-				icon="message"
-				color="indigo"
-			>
-				<div class="mt-4">
-					<a href="/toni" class="text-sm font-medium text-blue-400 hover:underline">
-						View Messages →
-					</a>
-				</div>
-			</FeatureCard>
-
-			<!-- Password Protection -->
-			<FeatureCard
-				title="Security"
-				description="All your posts and todos can be password protected for extra security."
-				icon="settings"
-				color="red"
-			>
-				<div class="mt-4">
-					<p class="text-sm text-slate-400">
-						Look for the <span class="font-mono bg-slate-700 px-1 rounded">#</span> symbol for protected
-						items
-					</p>
-				</div>
-			</FeatureCard>
-		</div>
-	</section>
-
-	<!-- Stats Section -->
-	<section class="mb-16">
-		<StatsDisplay>
-			<svelte:fragment slot="title">Live Community Stats</svelte:fragment>
-		</StatsDisplay>
-
-		<div class="mt-4 text-center text-sm text-slate-400">
-			<p>These statistics are pulled directly from our database in real-time</p>
-		</div>
-	</section>
-
-	<!-- Testimonials Section -->
-	<section class="mb-16">
-		<h2 class="text-3xl font-bold text-center mb-10 text-white">Community Feedback</h2>
-		<TestimonialCarousel />
-		<div class="mt-4 text-center text-sm text-slate-400">
-			<p>
-				Share your experience with our platform and help us improve! Your testimonial will be
-				displayed here after review.
+<!-- Mode Selection Screen -->
+<div class="min-h-screen flex items-center justify-center px-4">
+	<div class="max-w-6xl w-full">
+		<!-- Header -->
+		<div class="text-center mb-16">
+			<h1 class="text-5xl md:text-6xl font-bold text-white mb-4 animate-fade-in">
+				Welcome to the Platform
+			</h1>
+			<p class="text-xl text-slate-300 animate-fade-in" style="animation-delay: 0.2s">
+				Choose your experience
 			</p>
 		</div>
-	</section>
 
-	<!-- Call to Action -->
-	<section class="mb-16 text-center">
-		<div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 shadow-lg">
-			<h2 class="text-3xl font-bold text-white mb-4">Join Our Community Today</h2>
-			<p class="text-indigo-100 mb-6 max-w-2xl mx-auto">
-				Connect with like-minded individuals, share your thoughts, and stay organized with our suite
-				of tools.
-			</p>
-			<div class="flex flex-wrap justify-center gap-4">
-				<a
-					href="/toni"
-					class="bg-white text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg"
-				>
-					Post a Message
-				</a>
-				<a
-					href="/miscpro"
-					class="bg-indigo-700 text-white hover:bg-indigo-800 px-6 py-3 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg"
-				>
-					Try Our Tools
-				</a>
-			</div>
-		</div>
-	</section>
-
-	<!-- Quick Links -->
-	<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-		{#each routes.filter((route) => route.path !== '/') as route}
+		<!-- Mode Cards -->
+		<div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+			<!-- Omni Mode -->
 			<a
-				href={route.path}
-				class="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700 hover:shadow-md transition-all flex flex-col items-center justify-center text-center group"
+				href="/omni"
+				class="group relative bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border-2 border-emerald-500/30 rounded-2xl p-8 hover:border-emerald-400 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/20"
 			>
-				<span
-					class="text-lg font-medium text-white group-hover:group-hover:text-blue-400 transition-colors"
-					>{route.name}</span
+				<div class="relative z-10">
+					<div
+						class="w-20 h-20 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+					>
+						<svg
+							class="w-10 h-10 text-white"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+							/>
+						</svg>
+					</div>
+
+					<h2 class="text-3xl font-bold text-white mb-3 group-hover:text-emerald-300 transition-colors">
+						Omni
+					</h2>
+					<p class="text-slate-300 mb-6">
+						Family organization and tracking. Manage chores, groceries, rewards, and stay organized
+						together.
+					</p>
+
+					<div class="flex flex-wrap gap-2">
+						<span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm"
+							>Chores</span
+						>
+						<span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm"
+							>Groceries</span
+						>
+						<span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm"
+							>Rewards</span
+						>
+						<span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm"
+							>Analytics</span
+						>
+					</div>
+				</div>
+
+				<div
+					class="absolute bottom-4 right-4 text-emerald-400 group-hover:translate-x-2 transition-transform"
 				>
-				<span class="text-sm text-slate-400 mt-2">Explore →</span>
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M13 7l5 5m0 0l-5 5m5-5H6"
+						/>
+					</svg>
+				</div>
 			</a>
-		{/each}
-	</section>
+
+			<!-- Chadz Mode -->
+			<a
+				href="/chadz"
+				class="group relative bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border-2 border-indigo-500/30 rounded-2xl p-8 hover:border-indigo-400 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/20"
+			>
+				<div class="relative z-10">
+					<div
+						class="w-20 h-20 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+					>
+						<svg
+							class="w-10 h-10 text-white"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+							/>
+						</svg>
+					</div>
+
+					<h2 class="text-3xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors">
+						Chadz
+					</h2>
+					<p class="text-slate-300 mb-6">
+						Community platform. Connect, share, and accomplish more together with friends and family.
+					</p>
+
+					<div class="flex flex-wrap gap-2">
+						<span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-sm"
+							>Messages</span
+						>
+						<span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-sm">Todos</span
+						>
+						<span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-sm"
+							>Timeline</span
+						>
+						<span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-sm">Tools</span
+						>
+					</div>
+				</div>
+
+				<div
+					class="absolute bottom-4 right-4 text-indigo-400 group-hover:translate-x-2 transition-transform"
+				>
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M13 7l5 5m0 0l-5 5m5-5H6"
+						/>
+					</svg>
+				</div>
+			</a>
+		</div>
+
+		<!-- Footer Note -->
+		<div class="text-center mt-12 text-slate-400 animate-fade-in" style="animation-delay: 0.4s">
+			<p class="text-sm">Select a mode to continue. You can switch anytime from the navigation.</p>
+		</div>
+	</div>
 </div>
+
+<style>
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-fade-in {
+		animation: fade-in 0.6s ease-out forwards;
+	}
+</style>
