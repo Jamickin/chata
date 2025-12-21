@@ -191,8 +191,8 @@
 		return colors[category?.toLowerCase()] || colors.other;
 	}
 
-	$: purchasedCount = items.filter((i) => i.purchased).length;
-	$: totalCount = items.length;
+	let purchasedCount = $derived(items.filter((i) => i.purchased).length);
+	let totalCount = $derived(items.length);
 </script>
 
 <AnimatedBackground variant="particles" opacity={0.1} colorScheme="blue" />

@@ -33,8 +33,8 @@
 		openSidebar = !openSidebar;
 	}
 
-	$: displayRoutes = currentMode === 'omni' ? omniRoutes : currentMode === 'chadz' ? chadzRoutes : routes;
-	$: modeTitle = currentMode === 'omni' ? 'Omni' : currentMode === 'chadz' ? 'Chadz' : 'Menu';
+	let displayRoutes = $derived(currentMode === 'omni' ? omniRoutes : currentMode === 'chadz' ? chadzRoutes : routes);
+	let modeTitle = $derived(currentMode === 'omni' ? 'Omni' : currentMode === 'chadz' ? 'Chadz' : 'Menu');
 </script>
 
 <button class="side-button" aria-label="Toggle menu" onclick={toggleSidebar}>

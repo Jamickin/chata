@@ -28,8 +28,8 @@
 		}
 	}
 
-	$: displayRoutes = currentMode === 'omni' ? omniRoutes : currentMode === 'chadz' ? chadzRoutes : routes;
-	$: headerTitle = currentMode === 'omni' ? 'Welcome to Omni' : currentMode === 'chadz' ? 'Welcome To Chadz' : 'Platform';
+	let displayRoutes = $derived(currentMode === 'omni' ? omniRoutes : currentMode === 'chadz' ? chadzRoutes : routes);
+	let headerTitle = $derived(currentMode === 'omni' ? 'Welcome to Omni' : currentMode === 'chadz' ? 'Welcome To Chadz' : 'Platform');
 </script>
 
 <header class="fixed top-0 left-0 w-full p-4 z-10 bg-slate-800/80 backdrop-blur-lg shadow-sm">

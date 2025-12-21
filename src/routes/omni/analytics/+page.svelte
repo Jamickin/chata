@@ -77,12 +77,14 @@
 		}
 	}
 
-	$: completionRate =
-		stats.totalChores > 0 ? Math.round((stats.completedChores / stats.totalChores) * 100) : 0;
-	$: groceryProgress =
+	let completionRate = $derived(
+		stats.totalChores > 0 ? Math.round((stats.completedChores / stats.totalChores) * 100) : 0
+	);
+	let groceryProgress = $derived(
 		stats.totalGroceryItems > 0
 			? Math.round((stats.purchasedItems / stats.totalGroceryItems) * 100)
-			: 0;
+			: 0
+	);
 </script>
 
 <AnimatedBackground variant="particles" opacity={0.1} colorScheme="indigo" />
