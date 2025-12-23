@@ -181,14 +181,14 @@
 <AnimatedBackground variant="particles" opacity={0.1} colorScheme="green" />
 
 <div class="max-w-6xl mx-auto px-4 py-8">
-	<div class="flex justify-between items-center mb-8">
+	<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 		<div>
-			<h1 class="text-4xl font-bold text-white mb-2">Chores</h1>
+			<h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Chores</h1>
 			<p class="text-slate-400">Manage household tasks and assignments</p>
 		</div>
 		<button
 			onclick={() => openForm()}
-			class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+			class="w-full md:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
 		>
 			+ Add Chore
 		</button>
@@ -307,7 +307,7 @@
 					></textarea>
 				</div>
 
-				<div class="grid grid-cols-2 gap-4">
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<div>
 						<label for="chore-assign" class="block text-sm font-medium text-slate-300 mb-2">Assign To</label>
 						<select
@@ -333,7 +333,7 @@
 					</div>
 				</div>
 
-				<div class="grid grid-cols-2 gap-4">
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<div>
 						<label for="chore-priority" class="block text-sm font-medium text-slate-300 mb-2">Priority</label>
 						<select

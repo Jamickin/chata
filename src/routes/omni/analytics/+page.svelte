@@ -91,7 +91,7 @@
 
 <div class="max-w-6xl mx-auto px-4 py-8">
 	<div class="mb-8">
-		<h1 class="text-4xl font-bold text-white mb-2">Analytics</h1>
+		<h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Analytics</h1>
 		<p class="text-slate-400">Family activity and insights</p>
 	</div>
 
@@ -99,7 +99,7 @@
 		<Loading />
 	{:else}
 		<!-- Overview Stats -->
-		<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 			<div class="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
 				<div class="text-3xl font-bold text-emerald-400">{stats.totalChores}</div>
 				<div class="text-sm text-slate-400 mt-1">Total Chores</div>

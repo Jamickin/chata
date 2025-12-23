@@ -96,14 +96,14 @@
 <AnimatedBackground variant="particles" opacity={0.1} colorScheme="green" />
 
 <div class="max-w-4xl mx-auto px-4 py-8">
-	<div class="flex justify-between items-center mb-8">
+	<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 		<div>
-			<h1 class="text-4xl font-bold text-white mb-2">Family Members</h1>
+			<h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Family Members</h1>
 			<p class="text-slate-400">Manage your household members</p>
 		</div>
 		<button
 			onclick={() => openForm()}
-			class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+			class="w-full md:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
 		>
 			+ Add Member
 		</button>
@@ -117,7 +117,7 @@
 			<p class="text-slate-400 mb-4">No family members yet. Add your first member to get started!</p>
 			<button
 				onclick={() => openForm()}
-				class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+				class="w-full md:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
 			>
 				Add Family Member
 			</button>

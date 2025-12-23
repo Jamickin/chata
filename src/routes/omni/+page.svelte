@@ -125,16 +125,16 @@
 				All family tracking features are now live! Manage chores, groceries, rewards, and view
 				analytics all in one place. Everything is saved to the cloud with Firebase.
 			</p>
-			<div class="flex flex-wrap justify-center gap-4">
+			<div class="flex flex-col sm:flex-row flex-wrap justify-center gap-4">
 				<a
 					href="/omni/chores"
-					class="bg-white text-emerald-600 hover:bg-emerald-50 px-6 py-3 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg"
+					class="w-full sm:w-auto bg-white text-emerald-600 hover:bg-emerald-50 px-6 py-3 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg text-center"
 				>
 					Get Started →
 				</a>
 				<a
 					href="/chadz"
-					class="bg-emerald-700 text-white hover:bg-emerald-800 px-6 py-3 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg"
+					class="w-full sm:w-auto bg-emerald-700 text-white hover:bg-emerald-800 px-6 py-3 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg text-center"
 				>
 					Switch to Chadz →
 				</a>

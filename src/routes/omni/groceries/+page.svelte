@@ -199,14 +199,14 @@
 
 <div class="max-w-6xl mx-auto px-4 py-8">
 	<div class="mb-8">
-		<h1 class="text-4xl font-bold text-white mb-2">Grocery Lists</h1>
+		<h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Grocery Lists</h1>
 		<p class="text-slate-400">Manage your shopping lists</p>
 	</div>
 
 	{#if loading}
 		<Loading />
 	{:else}
-		<div class="grid md:grid-cols-4 gap-6">
+		<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 			<!-- Lists Sidebar -->
 			<div class="md:col-span-1">
 				<div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
@@ -252,7 +252,7 @@
 			<div class="md:col-span-3">
 				{#if selectedList}
 					<div class="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
-						<div class="flex justify-between items-center mb-6">
+						<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
 							<div>
 								<h2 class="text-2xl font-bold text-white">{selectedList.name}</h2>
 								<p class="text-sm text-slate-400 mt-1">
@@ -261,7 +261,7 @@
 							</div>
 							<button
 								onclick={() => (showItemForm = true)}
-								class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition"
+								class="w-full md:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
 							>
 								+ Add Item
 							</button>
@@ -351,7 +351,7 @@
 			<div class="flex gap-3">
 				<button
 					onclick={createList}
-					class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg transition"
+					class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
 				>
 					Create List
 				</button>
@@ -360,7 +360,7 @@
 						showListForm = false;
 						listName = '';
 					}}
-					class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
+					class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
 				>
 					Cancel
 				</button>
@@ -387,7 +387,7 @@
 					/>
 				</div>
 
-				<div class="grid grid-cols-2 gap-4">
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<div>
 						<label for="item-quantity" class="block text-sm font-medium text-slate-300 mb-2">Quantity</label>
 						<input
@@ -422,7 +422,7 @@
 			<div class="flex gap-3">
 				<button
 					onclick={addItem}
-					class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg transition"
+					class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
 				>
 					Add Item
 				</button>
@@ -431,7 +431,7 @@
 						showItemForm = false;
 						resetItemForm();
 					}}
-					class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
+					class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
 				>
 					Cancel
 				</button>

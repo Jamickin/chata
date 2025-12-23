@@ -80,14 +80,14 @@
 <AnimatedBackground variant="particles" opacity={0.1} colorScheme="purple" />
 
 <div class="max-w-6xl mx-auto px-4 py-8">
-	<div class="flex justify-between items-center mb-8">
+	<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 		<div>
-			<h1 class="text-4xl font-bold text-white mb-2">Rewards & Badges</h1>
+			<h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Rewards & Badges</h1>
 			<p class="text-slate-400">Track achievements and rewards</p>
 		</div>
 		<button
 			onclick={() => (showRewardForm = true)}
-			class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg transition"
+			class="w-full md:w-auto bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
 		>
 			+ Add Reward
 		</button>
@@ -140,7 +140,7 @@
 				{#if badges.length === 0}
 					<p class="text-slate-400">No badges yet</p>
 				{:else}
-					<div class="grid grid-cols-2 gap-4">
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 						{#each badges as badge}
 							<div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4 text-center">
 								<div class="text-4xl mb-2">{badge.icon || '🏆'}</div>
@@ -182,9 +182,9 @@
 					></textarea>
 				</div>
 
-				<div class="grid grid-cols-2 gap-4">
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<div>
-						<label for="reward-points" class="block text-sm text-slate-300 mb-2">Points</label>
+						<label for="reward-points" class="block text-sm font-medium text-slate-300 mb-2">Points</label>
 						<input
 						id="reward-points"
 							type="number"
@@ -194,7 +194,7 @@
 					</div>
 
 					<div>
-						<label for="reward-member" class="block text-sm text-slate-300 mb-2">Member</label>
+						<label for="reward-member" class="block text-sm font-medium text-slate-300 mb-2">Member</label>
 						<select
 						id="reward-member"
 							bind:value={rewardMember}
@@ -212,7 +212,7 @@
 			<div class="flex gap-3">
 				<button
 					onclick={addReward}
-					class="flex-1 bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg transition"
+					class="flex-1 bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
 				>
 					Add Reward
 				</button>
@@ -221,7 +221,7 @@
 						showRewardForm = false;
 						resetForm();
 					}}
-					class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
+					class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
 				>
 					Cancel
 				</button>
